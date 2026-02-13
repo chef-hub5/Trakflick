@@ -181,6 +181,25 @@
     .btn-added:hover {
       box-shadow: 0 6px 30px rgba(16, 185, 129, 0.5);
     }
+
+    /* Mobile list layout */
+    @media (max-width: 640px) {
+      .track-card-mobile {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .track-card-mobile .track-image {
+        flex-shrink: 0;
+        width: 100px;
+        height: 100px;
+      }
+
+      .track-card-mobile .track-content {
+        flex: 1;
+        min-width: 0;
+      }
+    }
   </style>
   <style>body { box-sizing: border-box; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -271,8 +290,8 @@
       <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Filter by Genre</h3>
       <div class="flex flex-wrap gap-3"><button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300 active" data-genre="all">All Genres</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="orchestral">Orchestral</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="electronic">Electronic</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="hybrid">Hybrid</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="piano">Piano</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="cinematic">Cinematic</button>
       </div>
-     </div><!-- Track Grid - 3 columns on mobile, 4 on desktop -->
-     <div id="tracks-grid" class="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-6"><!-- Tracks will be rendered here -->
+     </div><!-- Track Grid - List on mobile, 3 columns on tablet, 4 on desktop -->
+     <div id="tracks-grid" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6"><!-- Tracks will be rendered here -->
      </div>
     </div>
    </section><!-- Footer -->
@@ -480,8 +499,8 @@
       text_color: '#e8e8ec',
       primary_color: '#ff6b35',
       secondary_color: '#8b5cf6',
-      paystack_public_key: 'pk_live_eb5ee595e010a93de485f92afa7d461a179b489b',
-      store_email: ''
+      paystack_public_key: 'pk_test_xxxxxxxxxxxx',
+      store_email: 'store@trakflick.com'
     };
 
     // Track data with artwork images and MP3 links
@@ -690,7 +709,7 @@
     let currentAudio = null;
     let currentPlayingTrackId = null;
     let audioProgress = {};
-    let addToCartButtons = {}; // Track button states
+    let addToCartButtons = {};
 
     // Show notification at top
     function showNotification(trackTitle) {
@@ -715,28 +734,23 @@
       window.elementSdk.init({
         defaultConfig,
         onConfigChange: async (config) => {
-          // Update hero title
           const heroTitle = document.getElementById('hero-title');
           if (heroTitle) {
             heroTitle.innerHTML = `<span class="gradient-text">${(config.hero_title || defaultConfig.hero_title).split(' ').slice(0, 2).join(' ')}</span><br><span class="text-white">${(config.hero_title || defaultConfig.hero_title).split(' ').slice(2).join(' ')}</span>`;
           }
           
-          // Update hero subtitle
           const heroSubtitle = document.getElementById('hero-subtitle');
           if (heroSubtitle) {
             heroSubtitle.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
           }
           
-          // Update site name
           const siteName = document.getElementById('site-name');
           if (siteName) {
             siteName.textContent = config.site_name || defaultConfig.site_name;
           }
           
-          // Update document title
           document.title = `${config.site_name || defaultConfig.site_name} - Cinematic Sound Marketplace`;
 
-          // Apply colors
           document.documentElement.style.setProperty('--color-bg', config.background_color || defaultConfig.background_color);
           document.documentElement.style.setProperty('--color-surface', config.surface_color || defaultConfig.surface_color);
           document.documentElement.style.setProperty('--color-text', config.text_color || defaultConfig.text_color);
@@ -798,8 +812,8 @@
       const buttonText = isInCart ? 'Added ✓' : 'Add to Cart';
       
       return `
-        <div class="card-glow rounded-xl overflow-hidden group" data-track-id="${track.id}">
-          <div class="relative aspect-square">
+        <div class="card-glow rounded-xl overflow-hidden group track-card-mobile" data-track-id="${track.id}">
+          <div class="relative aspect-square sm:aspect-square w-full sm:w-full track-image">
             <img src="${track.artwork}" alt="${track.title}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #1a1a25, #0a0a0f)'; this.alt='Image unavailable';">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <button class="play-btn absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" data-track-id="${track.id}">
@@ -821,7 +835,7 @@
             </div>
           </div>
           
-          <div class="p-4">
+          <div class="p-4 flex-1 flex flex-col track-content">
             <div class="flex items-start justify-between mb-2">
               <h3 class="font-semibold text-white truncate flex-1 mr-2 text-sm">${track.title}</h3>
             </div>
@@ -851,7 +865,7 @@
               <input type="range" class="volume-slider flex-1" min="0" max="100" value="80" data-track-id="${track.id}">
             </div>
             
-            <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center justify-between gap-2 mt-auto">
               <div class="flex items-baseline gap-2">
                 <span class="font-display font-bold text-orange-400 text-sm">$${track.price}</span>
                 <span class="text-xs text-gray-500 line-through">$${track.originalPrice}</span>
@@ -892,7 +906,6 @@
 
     // Attach event listeners to track cards
     function attachTrackEventListeners() {
-      // Play buttons
       document.querySelectorAll('.play-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -901,7 +914,6 @@
         });
       });
 
-      // Progress bar click handlers
       document.querySelectorAll('.track-progress').forEach(bar => {
         bar.addEventListener('click', (e) => {
           const trackId = parseInt(bar.dataset.trackId);
@@ -922,7 +934,6 @@
         });
       });
 
-      // Volume sliders
       document.querySelectorAll('.volume-slider').forEach(slider => {
         slider.addEventListener('input', (e) => {
           const volume = e.target.value / 100;
@@ -932,7 +943,6 @@
         });
       });
 
-      // Details buttons
       document.querySelectorAll('.details-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -941,7 +951,6 @@
         });
       });
 
-      // Add to cart buttons
       document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -1123,11 +1132,9 @@
         updateCartUI();
         showNotification(track.title);
         
-        // Update button state
         if (button) {
           updateButtonState(button, true);
         } else {
-          // Find button in grid and update it
           const gridButton = document.querySelector(`.add-to-cart-btn[data-track-id="${trackId}"]`);
           if (gridButton) {
             updateButtonState(gridButton, true);
@@ -1143,7 +1150,6 @@
         button.classList.add('btn-added');
         button.textContent = 'Added ✓';
         
-        // Revert after 2 seconds
         setTimeout(() => {
           button.classList.remove('btn-added');
           button.classList.add('btn-primary');
@@ -1356,11 +1362,9 @@
           return;
         }
 
-        // Show loading state
         payButton.disabled = true;
         payButton.innerHTML = '<div class="spinner"></div> Processing...';
 
-        // Initialize Paystack payment
         const handler = PaystackPop.setup({
           key: publicKey,
           email: email,
@@ -1559,5 +1563,5 @@
       });
     });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd6d3c721e841e2',t:'MTc3MTAxMTkzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd6f1b7a30941e2',t:'MTc3MTAxMzE2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
