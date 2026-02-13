@@ -216,6 +216,31 @@
         transform: translateX(0);
       }
     }
+
+    /* Play button visibility - visible on mobile, hover on desktop */
+    @media (max-width: 639px) {
+      .play-btn {
+        opacity: 1 !important;
+      }
+      .play-overlay {
+        opacity: 0.5 !important;
+      }
+    }
+
+    @media (min-width: 640px) {
+      .play-btn {
+        opacity: 0 !important;
+      }
+      .play-overlay {
+        opacity: 0 !important;
+      }
+      .card-glow:hover .play-btn {
+        opacity: 1 !important;
+      }
+      .card-glow:hover .play-overlay {
+        opacity: 1 !important;
+      }
+    }
   </style>
   <style>body { box-sizing: border-box; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -882,8 +907,8 @@
         <div class="card-glow rounded-lg sm:rounded-xl overflow-hidden group" data-track-id="${track.id}">
           <div class="relative w-full aspect-square">
             <img src="${track.artwork}" alt="${track.title}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #1a1a25, #0a0a0f)'; this.alt='Image unavailable';">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <button class="play-btn absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" data-track-id="${track.id}">
+            <div class="play-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <button class="play-btn absolute inset-0 flex items-center justify-center" data-track-id="${track.id}">
               <div class="w-12 h-12 sm:w-16 sm:h-16 bg-orange-500 rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform flex-shrink-0">
                 ${isPlaying ? `
                   <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -1729,5 +1754,5 @@
       });
     });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd7756a20a6977c',t:'MTc3MTAxODU1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd7910712af593a',t:'MTc3MTAxOTY5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
