@@ -78,7 +78,7 @@
       transition: all 0.3s ease;
     }
     
-    .btn-primary:hover {
+    .btn-primary:hover:not(:disabled) {
       box-shadow: 0 6px 30px rgba(255, 107, 53, 0.5);
       transform: translateY(-2px);
     }
@@ -176,10 +176,12 @@
     .btn-added {
       background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
       box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+      cursor: not-allowed;
     }
 
     .btn-added:hover {
-      box-shadow: 0 6px 30px rgba(16, 185, 129, 0.5);
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+      transform: none;
     }
 
     /* Mobile list layout */
@@ -290,8 +292,14 @@
       <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Filter by Genre</h3>
       <div class="flex flex-wrap gap-3"><button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300 active" data-genre="all">All Genres</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="orchestral">Orchestral</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="electronic">Electronic</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="hybrid">Hybrid</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="piano">Piano</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="cinematic">Cinematic</button>
       </div>
-     </div><!-- Track Grid - List on mobile, 3 columns on tablet, 4 on desktop -->
-     <div id="tracks-grid" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6"><!-- Tracks will be rendered here -->
+     </div><!-- Track Grid - 1 column on mobile, 3 columns on tablet, 4 on desktop -->
+     <div id="tracks-grid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"><!-- Tracks will be rendered here -->
+     </div><!-- Pagination Controls -->
+     <div id="pagination-controls" class="flex justify-center items-center gap-4 mt-12 hidden"><button id="prev-btn" class="btn-primary px-6 py-3 rounded-xl font-semibold text-white flex items-center gap-2">
+       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+       </svg> Previous </button> <span id="page-info" class="text-gray-400 font-medium">Page 1 of 2</span> <button id="next-btn" class="btn-primary px-6 py-3 rounded-xl font-semibold text-white flex items-center gap-2"> Next 
+       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+       </svg></button>
      </div>
     </div>
    </section><!-- Footer -->
@@ -396,15 +404,19 @@
      <div class="p-8">
       <h2 class="font-display text-3xl font-bold text-white mb-6">Contact Us</h2>
       <form id="contact-form" class="space-y-4">
-       <div><label for="contact-name" class="block text-sm font-medium text-gray-400 mb-2">Name</label> <input type="text" id="contact-name" class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none" placeholder="Your name">
+       <div><label for="contact-name" class="block text-sm font-medium text-gray-400 mb-2">Name <span class="text-red-500">*</span></label> <input type="text" id="contact-name" required class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none" placeholder="Your name">
        </div>
-       <div><label for="contact-email" class="block text-sm font-medium text-gray-400 mb-2">Email</label> <input type="email" id="contact-email" class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none" placeholder="your@email.com">
+       <div><label for="contact-email" class="block text-sm font-medium text-gray-400 mb-2">Email <span class="text-red-500">*</span></label> <input type="email" id="contact-email" required class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none" placeholder="your@email.com">
        </div>
-       <div><label for="contact-subject" class="block text-sm font-medium text-gray-400 mb-2">Subject</label> <select id="contact-subject" class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white focus:border-orange-500 focus:outline-none"> <option value="general">General Inquiry</option> <option value="licensing">Licensing Questions</option> <option value="technical">Technical Support</option> <option value="business">Business Partnership</option> </select>
+       <div><label for="contact-subject" class="block text-sm font-medium text-gray-400 mb-2">Subject <span class="text-red-500">*</span></label> <select id="contact-subject" required class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white focus:border-orange-500 focus:outline-none"> <option value="">Select a subject...</option> <option value="general">General Inquiry</option> <option value="licensing">Licensing Questions</option> <option value="technical">Technical Support</option> <option value="business">Business Partnership</option> </select>
        </div>
-       <div><label for="contact-message" class="block text-sm font-medium text-gray-400 mb-2">Message</label> <textarea id="contact-message" rows="4" class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none resize-none" placeholder="How can we help?"></textarea>
+       <div><label for="contact-message" class="block text-sm font-medium text-gray-400 mb-2">Message <span class="text-red-500">*</span></label> <textarea id="contact-message" rows="4" required class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none resize-none" placeholder="How can we help?"></textarea>
        </div><button type="submit" class="w-full btn-primary py-4 rounded-xl font-semibold text-white">Send Message</button>
       </form>
+      <div id="contact-sending" class="hidden text-center py-8">
+       <div class="spinner mx-auto mb-4"></div>
+       <h3 class="font-display text-xl font-semibold text-white">Sending your message...</h3>
+      </div>
       <div id="contact-success" class="hidden text-center py-8">
        <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
         <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -499,11 +511,11 @@
       text_color: '#e8e8ec',
       primary_color: '#ff6b35',
       secondary_color: '#8b5cf6',
-      paystack_public_key: 'pk_test_xxxxxxxxxxxx',
-      store_email: 'store@trakflick.com'
+      paystack_public_key: 'pk_live_eb5ee595e010a93de485f92afa7d461a179b489b',
+      store_email: ''
     };
 
-    // Track data with artwork images and MP3 links
+    // Track data with artwork images and MP3 links - ALL PRICES IN NAIRA
     const tracksData = [
       {
         id: 1,
@@ -513,8 +525,8 @@
         bpm: 120,
         duration: "3:45",
         durationSeconds: 225,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
         tags: ["Triumphant", "Heroic", "Adventure"],
@@ -529,8 +541,8 @@
         bpm: 90,
         duration: "4:12",
         durationSeconds: 252,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
         tags: ["Suspenseful", "Dark", "Thriller"],
@@ -545,8 +557,8 @@
         bpm: 70,
         duration: "5:20",
         durationSeconds: 320,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
         tags: ["Melancholic", "Beautiful", "Reflective"],
@@ -561,8 +573,8 @@
         bpm: 100,
         duration: "4:30",
         durationSeconds: 270,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1614149162883-504ce4d13909?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
         tags: ["Sci-Fi", "Space", "Otherworldly"],
@@ -577,8 +589,8 @@
         bpm: 130,
         duration: "3:15",
         durationSeconds: 195,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
         tags: ["Inspiring", "Triumph", "Achievement"],
@@ -593,8 +605,8 @@
         bpm: 85,
         duration: "4:45",
         durationSeconds: 285,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
         tags: ["Ominous", "Horror", "Dread"],
@@ -609,8 +621,8 @@
         bpm: 60,
         duration: "6:00",
         durationSeconds: 360,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
         tags: ["Peaceful", "Nature", "Meditative"],
@@ -625,8 +637,8 @@
         bpm: 140,
         duration: "3:30",
         durationSeconds: 210,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1571974599782-87624638275e?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
         tags: ["Cyberpunk", "Action", "Intense"],
@@ -641,8 +653,8 @@
         bpm: 65,
         duration: "5:00",
         durationSeconds: 300,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
         tags: ["Romantic", "Tender", "Love"],
@@ -657,8 +669,8 @@
         bpm: 75,
         duration: "4:20",
         durationSeconds: 260,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
         tags: ["Historical", "Discovery", "Wonder"],
@@ -673,8 +685,8 @@
         bpm: 110,
         duration: "3:55",
         durationSeconds: 235,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
         tags: ["Powerful", "Battle", "Dramatic"],
@@ -689,8 +701,8 @@
         bpm: 80,
         duration: "4:10",
         durationSeconds: 250,
-        price: 100,
-        originalPrice: 150,
+        price: 100000,
+        originalPrice: 150000,
         artwork: "https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?w=400&h=400&fit=crop",
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3",
         tags: ["Hopeful", "Warm", "Optimistic"],
@@ -709,7 +721,28 @@
     let currentAudio = null;
     let currentPlayingTrackId = null;
     let audioProgress = {};
-    let addToCartButtons = {};
+    let currentPage = 0;
+    const tracksPerPage = 10;
+
+    // Load cart from localStorage
+    function loadCart() {
+      const savedCart = localStorage.getItem('trakflick_cart');
+      if (savedCart) {
+        try {
+          const savedIds = JSON.parse(savedCart);
+          cart = tracksData.filter(track => savedIds.includes(track.id));
+          updateCartUI();
+        } catch (e) {
+          console.error('Error loading cart:', e);
+        }
+      }
+    }
+
+    // Save cart to localStorage
+    function saveCart() {
+      const cartIds = cart.map(track => track.id);
+      localStorage.setItem('trakflick_cart', JSON.stringify(cartIds));
+    }
 
     // Show notification at top
     function showNotification(trackTitle) {
@@ -867,8 +900,8 @@
             
             <div class="flex items-center justify-between gap-2 mt-auto">
               <div class="flex items-baseline gap-2">
-                <span class="font-display font-bold text-orange-400 text-sm">$${track.price}</span>
-                <span class="text-xs text-gray-500 line-through">$${track.originalPrice}</span>
+                <span class="font-display font-bold text-orange-400 text-sm">₦${track.price.toLocaleString()}</span>
+                <span class="text-xs text-gray-500 line-through">₦${track.originalPrice.toLocaleString()}</span>
               </div>
               <div class="flex gap-1">
                 <button class="details-btn p-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors" data-track-id="${track.id}">
@@ -876,7 +909,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
                 </button>
-                <button class="add-to-cart-btn ${buttonClass} px-3 py-2 rounded-lg font-medium text-white text-xs transition-all duration-300" data-track-id="${track.id}">
+                <button class="add-to-cart-btn ${buttonClass} px-3 py-2 rounded-lg font-medium text-white text-xs transition-all duration-300" data-track-id="${track.id}" ${isInCart ? 'disabled' : ''}>
                   ${buttonText}
                 </button>
               </div>
@@ -886,7 +919,7 @@
       `;
     }
 
-    // Filter and render tracks
+    // Filter and render tracks with pagination
     function filterAndRenderTracks() {
       const filtered = tracksData.filter(track => {
         const moodMatch = currentMood === 'all' || track.mood === currentMood;
@@ -899,8 +932,25 @@
         return moodMatch && genreMatch && searchMatch;
       });
 
+      const totalPages = Math.ceil(filtered.length / tracksPerPage);
+      const start = currentPage * tracksPerPage;
+      const end = start + tracksPerPage;
+      const paginatedTracks = filtered.slice(start, end);
+
       const grid = document.getElementById('tracks-grid');
-      grid.innerHTML = filtered.map(renderTrackCard).join('');
+      grid.innerHTML = paginatedTracks.map(renderTrackCard).join('');
+
+      // Show/hide pagination controls
+      const paginationControls = document.getElementById('pagination-controls');
+      if (filtered.length > tracksPerPage) {
+        paginationControls.classList.remove('hidden');
+        document.getElementById('page-info').textContent = `Page ${currentPage + 1} of ${totalPages}`;
+        document.getElementById('prev-btn').disabled = currentPage === 0;
+        document.getElementById('next-btn').disabled = currentPage >= totalPages - 1;
+      } else {
+        paginationControls.classList.add('hidden');
+      }
+
       attachTrackEventListeners();
     }
 
@@ -954,8 +1004,10 @@
       document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          const trackId = parseInt(btn.dataset.trackId);
-          addToCart(trackId, btn);
+          if (!btn.disabled) {
+            const trackId = parseInt(btn.dataset.trackId);
+            addToCart(trackId, btn);
+          }
         });
       });
     }
@@ -1041,6 +1093,7 @@
       const modal = document.getElementById('track-modal');
       const content = document.getElementById('modal-content');
       const discount = Math.round(((track.originalPrice - track.price) / track.originalPrice) * 100);
+      const isInCart = cart.some(item => item.id === track.id);
 
       content.innerHTML = `
         <div class="relative">
@@ -1054,8 +1107,8 @@
               <h2 class="font-display text-2xl font-bold text-white mt-3">${track.title}</h2>
             </div>
             <div class="text-right">
-              <span class="block font-display text-3xl font-bold text-orange-400">$${track.price}</span>
-              <span class="text-sm text-gray-500 line-through">$${track.originalPrice}</span>
+              <span class="block font-display text-3xl font-bold text-orange-400">₦${track.price.toLocaleString()}</span>
+              <span class="text-sm text-gray-500 line-through">₦${track.originalPrice.toLocaleString()}</span>
               <span class="block text-sm text-red-400 font-semibold mt-1">${discount}% OFF</span>
             </div>
           </div>
@@ -1096,7 +1149,7 @@
           </div>
           
           <div class="p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl mb-6">
-            <h3 class="font-semibold text-orange-400 mb-2">Universal License - $${track.price}</h3>
+            <h3 class="font-semibold text-orange-400 mb-2">Universal License - ₦${track.price.toLocaleString()}</h3>
             <ul class="space-y-1 text-sm text-gray-300">
               <li>✓ Unlimited commercial use</li>
               <li>✓ All media types (Film, TV, Web, Ads)</li>
@@ -1106,21 +1159,24 @@
             </ul>
           </div>
           
-          <button class="modal-add-to-cart w-full btn-primary py-4 rounded-xl font-semibold text-white text-lg" data-track-id="${track.id}">
-            Add to Cart - $${track.price}
+          <button class="modal-add-to-cart w-full ${isInCart ? 'btn-added' : 'btn-primary'} py-4 rounded-xl font-semibold text-white text-lg" data-track-id="${track.id}" ${isInCart ? 'disabled' : ''}>
+            ${isInCart ? 'Added ✓' : `Add to Cart - ₦${track.price.toLocaleString()}`}
           </button>
         </div>
       `;
 
       modal.classList.remove('hidden');
 
-      content.querySelector('.modal-add-to-cart').addEventListener('click', () => {
-        addToCart(trackId);
-        modal.classList.add('hidden');
+      const addButton = content.querySelector('.modal-add-to-cart');
+      addButton.addEventListener('click', () => {
+        if (!addButton.disabled) {
+          addToCart(trackId);
+          modal.classList.add('hidden');
+        }
       });
     }
 
-    // Add to cart with button state animation
+    // Add to cart - stays added permanently
     function addToCart(trackId, button = null) {
       const track = tracksData.find(t => t.id === trackId);
       if (!track) return;
@@ -1129,40 +1185,51 @@
       
       if (!isAlreadyInCart) {
         cart.push(track);
+        saveCart();
         updateCartUI();
         showNotification(track.title);
         
-        if (button) {
-          updateButtonState(button, true);
-        } else {
-          const gridButton = document.querySelector(`.add-to-cart-btn[data-track-id="${trackId}"]`);
-          if (gridButton) {
-            updateButtonState(gridButton, true);
-          }
-        }
-      }
-    }
-
-    // Update button appearance and text
-    function updateButtonState(button, isAdded) {
-      if (isAdded) {
-        button.classList.remove('btn-primary');
-        button.classList.add('btn-added');
-        button.textContent = 'Added ✓';
+        // Update all buttons for this track to show "Added"
+        document.querySelectorAll(`.add-to-cart-btn[data-track-id="${trackId}"]`).forEach(btn => {
+          btn.classList.remove('btn-primary');
+          btn.classList.add('btn-added');
+          btn.textContent = 'Added ✓';
+          btn.disabled = true;
+        });
         
-        setTimeout(() => {
-          button.classList.remove('btn-added');
-          button.classList.add('btn-primary');
-          button.textContent = 'Add to Cart';
-        }, 2000);
+        // Update modal button if it exists
+        const modalBtn = document.querySelector(`.modal-add-to-cart[data-track-id="${trackId}"]`);
+        if (modalBtn) {
+          modalBtn.classList.remove('btn-primary');
+          modalBtn.classList.add('btn-added');
+          modalBtn.textContent = 'Added ✓';
+          modalBtn.disabled = true;
+        }
       }
     }
 
     // Remove from cart
     function removeFromCart(trackId) {
       cart = cart.filter(item => item.id !== trackId);
+      saveCart();
       updateCartUI();
       renderCartContent();
+      
+      // Reset buttons to "Add to Cart"
+      document.querySelectorAll(`.add-to-cart-btn[data-track-id="${trackId}"]`).forEach(btn => {
+        btn.classList.remove('btn-added');
+        btn.classList.add('btn-primary');
+        btn.textContent = 'Add to Cart';
+        btn.disabled = false;
+      });
+      
+      const modalBtn = document.querySelector(`.modal-add-to-cart[data-track-id="${trackId}"]`);
+      if (modalBtn) {
+        modalBtn.classList.remove('btn-added');
+        modalBtn.classList.add('btn-primary');
+        modalBtn.textContent = `Add to Cart - ₦${tracksData.find(t => t.id === trackId).price.toLocaleString()}`;
+        modalBtn.disabled = false;
+      }
     }
 
     // Update cart UI
@@ -1204,7 +1271,7 @@
                 <h4 class="font-medium text-white">${item.title}</h4>
                 <span class="text-sm text-gray-400">5-in-1 Bundle</span>
               </div>
-              <span class="font-semibold text-orange-400">$${item.price}</span>
+              <span class="font-semibold text-orange-400">₦${item.price.toLocaleString()}</span>
               <button class="remove-from-cart p-2 text-gray-400 hover:text-red-400 transition-colors" data-track-id="${item.id}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -1216,7 +1283,7 @@
         <div class="border-t border-gray-800 pt-4 mb-6">
           <div class="flex justify-between items-center text-lg">
             <span class="text-gray-300">Total</span>
-            <span class="font-display font-bold text-2xl text-orange-400">$${total}</span>
+            <span class="font-display font-bold text-2xl text-orange-400">₦${total.toLocaleString()}</span>
           </div>
         </div>
         <button id="proceed-to-payment" class="w-full btn-primary py-4 rounded-xl font-semibold text-white">
@@ -1256,13 +1323,13 @@
             ${cart.map(item => `
               <div class="flex justify-between text-sm">
                 <span class="text-gray-300">${item.title}</span>
-                <span class="text-white">$${item.price}</span>
+                <span class="text-white">₦${item.price.toLocaleString()}</span>
               </div>
             `).join('')}
           </div>
           <div class="border-t border-gray-700 pt-2 flex justify-between">
             <span class="font-semibold text-white">Total</span>
-            <span class="font-display font-bold text-xl text-orange-400">$${total}</span>
+            <span class="font-display font-bold text-xl text-orange-400">₦${total.toLocaleString()}</span>
           </div>
         </div>
         
@@ -1299,7 +1366,7 @@
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
           </svg>
-          Pay with Paystack - ₦${Math.round(totalInKobo / 100)}
+          Pay with Paystack - ₦${total.toLocaleString()}
         </button>
         
         <p class="text-center text-xs text-gray-500 mt-4">
@@ -1377,7 +1444,7 @@
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
-              Pay with Paystack - ₦${Math.round(totalInKobo / 100)}
+              Pay with Paystack - ₦${total.toLocaleString()}
             `;
             showNotification('Payment cancelled');
           },
@@ -1400,7 +1467,9 @@
             `;
 
             cart = [];
+            saveCart();
             updateCartUI();
+            filterAndRenderTracks();
 
             document.getElementById('close-payment-success').addEventListener('click', () => {
               modal.classList.add('hidden');
@@ -1431,6 +1500,7 @@
 
     // Event Listeners
     document.addEventListener('DOMContentLoaded', () => {
+      loadCart();
       filterAndRenderTracks();
       startSlider();
 
@@ -1441,6 +1511,7 @@
 
       document.getElementById('search-input').addEventListener('input', (e) => {
         searchQuery = e.target.value;
+        currentPage = 0;
         filterAndRenderTracks();
       });
 
@@ -1449,6 +1520,7 @@
           document.querySelectorAll('.filter-chip:not(.genre-chip)').forEach(c => c.classList.remove('active'));
           chip.classList.add('active');
           currentMood = chip.dataset.mood;
+          currentPage = 0;
           filterAndRenderTracks();
         });
       });
@@ -1458,8 +1530,23 @@
           document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active'));
           chip.classList.add('active');
           currentGenre = chip.dataset.genre;
+          currentPage = 0;
           filterAndRenderTracks();
         });
+      });
+
+      document.getElementById('prev-btn').addEventListener('click', () => {
+        if (currentPage > 0) {
+          currentPage--;
+          filterAndRenderTracks();
+          window.scrollTo({ top: document.getElementById('tracks-grid').offsetTop - 100, behavior: 'smooth' });
+        }
+      });
+
+      document.getElementById('next-btn').addEventListener('click', () => {
+        currentPage++;
+        filterAndRenderTracks();
+        window.scrollTo({ top: document.getElementById('tracks-grid').offsetTop - 100, behavior: 'smooth' });
       });
 
       document.querySelectorAll('.slide-indicator').forEach(indicator => {
@@ -1532,8 +1619,32 @@
 
       document.getElementById('contact-form').addEventListener('submit', (e) => {
         e.preventDefault();
+        
+        const name = document.getElementById('contact-name');
+        const email = document.getElementById('contact-email');
+        const subject = document.getElementById('contact-subject');
+        const message = document.getElementById('contact-message');
+
+        // Show sending state
         document.getElementById('contact-form').classList.add('hidden');
-        document.getElementById('contact-success').classList.remove('hidden');
+        document.getElementById('contact-sending').classList.remove('hidden');
+
+        // Simulate 4 second sending time
+        setTimeout(() => {
+          // Hide sending state and show success
+          document.getElementById('contact-sending').classList.add('hidden');
+          document.getElementById('contact-success').classList.remove('hidden');
+
+          // Reset form after 3 seconds
+          setTimeout(() => {
+            name.value = '';
+            email.value = '';
+            subject.value = '';
+            message.value = '';
+            document.getElementById('contact-form').classList.remove('hidden');
+            document.getElementById('contact-success').classList.add('hidden');
+          }, 3000);
+        }, 4000);
       });
 
       document.getElementById('footer-privacy').addEventListener('click', (e) => {
@@ -1563,5 +1674,5 @@
       });
     });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd6f1b7a30941e2',t:'MTc3MTAxMzE2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd75aa3f68041e2',t:'MTc3MTAxNzQ2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
