@@ -1,0 +1,1563 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trakflick - Cinematic Sound Marketplace</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #0a0a0f;
+      --color-surface: #15151f;
+      --color-text: #e8e8ec;
+      --color-primary: #ff6b35;
+      --color-secondary: #8b5cf6;
+    }
+    
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-primary) var(--color-surface);
+    }
+    
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+    
+    .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #ff6b35, #ff8f65, #ffd93d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero-gradient {
+      background: radial-gradient(ellipse at 50% 0%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
+                  linear-gradient(180deg, #0a0a0f 0%, #0d0d14 100%);
+    }
+    
+    .card-glow {
+      background: linear-gradient(145deg, #1a1a25 0%, #12121a 100%);
+      border: 1px solid rgba(255, 107, 53, 0.1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .card-glow:hover {
+      border-color: rgba(255, 107, 53, 0.3);
+      box-shadow: 0 20px 60px -15px rgba(255, 107, 53, 0.2),
+                  0 0 40px -10px rgba(139, 92, 246, 0.1);
+      transform: translateY(-4px);
+    }
+    
+    .filter-chip {
+      background: rgba(255, 107, 53, 0.1);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .filter-chip:hover, .filter-chip.active {
+      background: rgba(255, 107, 53, 0.2);
+      border-color: #ff6b35;
+      color: #ff6b35;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #ff6b35 0%, #ff8f65 100%);
+      box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      box-shadow: 0 6px 30px rgba(255, 107, 53, 0.5);
+      transform: translateY(-2px);
+    }
+    
+    .progress-bar {
+      background: linear-gradient(90deg, #ff6b35, #ff8f65);
+      transition: width 0.1s linear;
+    }
+    
+    .modal-backdrop {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+    }
+    
+    .slide-indicator {
+      transition: all 0.3s ease;
+    }
+    
+    .slide-indicator.active {
+      width: 2rem;
+      background: #ff6b35;
+    }
+
+    .volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      background: rgba(255, 107, 53, 0.3);
+      border-radius: 2px;
+      outline: none;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      background: #ff6b35;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .volume-slider::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      background: #ff6b35;
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+
+    .track-progress {
+      cursor: pointer;
+    }
+
+    .spinner {
+      border: 3px solid rgba(255, 107, 53, 0.3);
+      border-top-color: #ff6b35;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes slide-down {
+      from {
+        transform: translateY(-100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slide-up {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-100%);
+      }
+    }
+
+    .notification-enter {
+      animation: slide-down 0.3s ease-out forwards;
+    }
+
+    .notification-exit {
+      animation: slide-up 0.3s ease-out forwards;
+    }
+
+    .btn-added {
+      background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-added:hover {
+      box-shadow: 0 6px 30px rgba(16, 185, 129, 0.5);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto">
+  <div id="app" class="min-h-full flex flex-col"><!-- Top notification bar -->
+   <div id="top-notification" class="fixed top-0 left-0 right-0 z-40 bg-green-500/90 backdrop-blur-sm text-white px-6 py-3 text-center hidden">
+    <div class="flex items-center justify-center gap-2">
+     <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+     </svg><span id="notification-text">Added to cart!</span>
+    </div>
+   </div><!-- Navigation -->
+   <nav class="fixed top-0 left-0 right-0 z-50 bg-opacity-90 backdrop-blur-xl" style="background: rgba(10, 10, 15, 0.9);">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+     <div class="flex items-center justify-between"><a href="#" id="logo-link" class="flex items-center gap-3 cursor-pointer">
+       <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center">
+        <svg class="w-6 h-6 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+        </svg>
+       </div><span id="site-name" class="font-display font-bold text-xl text-white">Trakflick</span> </a>
+      <div class="hidden md:flex items-center gap-8"><a href="#tracks" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Tracks</a> <a href="#about" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">About Us</a> <a href="#contact" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Contact Us</a>
+      </div>
+      <div class="flex items-center gap-4"><button id="cart-btn" class="relative p-2 text-gray-300 hover:text-orange-400 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg><span id="cart-count" class="absolute -top-1 -right-1 w-5 h-5 bg-orange-500 rounded-full text-xs text-white flex items-center justify-center font-bold hidden">0</span> </button>
+      </div>
+     </div>
+    </div>
+   </nav><!-- Hero Section with Slides -->
+   <section class="hero-gradient pt-24 pb-16 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-30">
+     <div class="absolute top-20 left-10 w-72 h-72 bg-orange-500 rounded-full filter blur-[120px]"></div>
+     <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-600 rounded-full filter blur-[150px]"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-6 relative">
+     <div id="hero-slider" class="relative h-[400px] md:h-[500px] overflow-hidden rounded-2xl"><!-- Slide 1 -->
+      <div class="slide absolute inset-0 transition-opacity duration-700" data-slide="0"><img id="hero-slide-1" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&amp;h=600&amp;fit=crop" alt="Cinematic soundtrack" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #1a1a25, #0a0a0f)'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+       <div class="absolute inset-0 flex items-center">
+        <div class="px-8 md:px-16 max-w-2xl">
+         <h1 id="hero-title" class="font-display text-4xl md:text-6xl font-bold mb-4"><span class="gradient-text">Cinematic Sound</span> <br><span class="text-white">For Your Vision</span></h1>
+         <p id="hero-subtitle" class="text-gray-300 text-lg md:text-xl mb-8">Premium soundtracks and sound effects crafted for film, TV, and digital media productions.</p><a href="#tracks" class="btn-primary px-8 py-4 rounded-xl font-semibold text-white inline-flex items-center gap-2"> Explore Tracks 
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg></a>
+        </div>
+       </div>
+      </div><!-- Slide 2 -->
+      <div class="slide absolute inset-0 transition-opacity duration-700 opacity-0" data-slide="1"><img id="hero-slide-2" src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1200&amp;h=600&amp;fit=crop" alt="Music production" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #1a1a25, #0a0a0f)'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+       <div class="absolute inset-0 flex items-center">
+        <div class="px-8 md:px-16 max-w-2xl">
+         <h1 class="font-display text-4xl md:text-6xl font-bold mb-4"><span class="gradient-text">5-in-1 Bundles</span> <br><span class="text-white">Maximum Value</span></h1>
+         <p class="text-gray-300 text-lg md:text-xl mb-8">Each track bundle includes 5 premium variations for complete creative flexibility.</p><a href="#tracks" class="btn-primary px-8 py-4 rounded-xl font-semibold text-white inline-flex items-center gap-2"> View Bundles 
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg></a>
+        </div>
+       </div>
+      </div><!-- Slide 3 -->
+      <div class="slide absolute inset-0 transition-opacity duration-700 opacity-0" data-slide="2"><img id="hero-slide-3" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&amp;h=600&amp;fit=crop" alt="Sound waves" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #1a1a25, #0a0a0f)'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+       <div class="absolute inset-0 flex items-center">
+        <div class="px-8 md:px-16 max-w-2xl">
+         <h1 class="font-display text-4xl md:text-6xl font-bold mb-4"><span class="gradient-text">Universal License</span> <br><span class="text-white">Unlimited Use</span></h1>
+         <p class="text-gray-300 text-lg md:text-xl mb-8">One license covers all media types with worldwide distribution rights. Forever.</p><a href="#tracks" class="btn-primary px-8 py-4 rounded-xl font-semibold text-white inline-flex items-center gap-2"> Start Creating 
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg></a>
+        </div>
+       </div>
+      </div>
+     </div><!-- Slide Indicators -->
+     <div class="flex justify-center gap-2 mt-6"><button class="slide-indicator w-3 h-3 rounded-full bg-white/30 active" data-slide="0"></button> <button class="slide-indicator w-3 h-3 rounded-full bg-white/30" data-slide="1"></button> <button class="slide-indicator w-3 h-3 rounded-full bg-white/30" data-slide="2"></button>
+     </div>
+    </div>
+   </section><!-- Search & Filter Section -->
+   <section id="tracks" class="py-12 px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="flex flex-col md:flex-row gap-6 mb-8"><!-- Search Bar -->
+      <div class="flex-1 relative">
+       <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+       </svg><input type="text" id="search-input" placeholder="Search by mood, genre, or keyword..." class="w-full pl-12 pr-4 py-4 bg-[#15151f] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none transition-colors">
+      </div>
+     </div><!-- Mood Filters -->
+     <div class="mb-8">
+      <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Filter by Mood</h3>
+      <div class="flex flex-wrap gap-3"><button class="filter-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300 active" data-mood="all">All</button> <button class="filter-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-mood="epic">Epic</button> <button class="filter-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-mood="emotional">Emotional</button> <button class="filter-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-mood="tense">Tense</button> <button class="filter-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-mood="mysterious">Mysterious</button> <button class="filter-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-mood="uplifting">Uplifting</button> <button class="filter-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-mood="dark">Dark</button> <button class="filter-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-mood="ambient">Ambient</button>
+      </div>
+     </div><!-- Genre Filters -->
+     <div class="mb-8">
+      <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Filter by Genre</h3>
+      <div class="flex flex-wrap gap-3"><button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300 active" data-genre="all">All Genres</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="orchestral">Orchestral</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="electronic">Electronic</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="hybrid">Hybrid</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="piano">Piano</button> <button class="filter-chip genre-chip px-4 py-2 rounded-full text-sm font-medium text-gray-300" data-genre="cinematic">Cinematic</button>
+      </div>
+     </div><!-- Track Grid - 3 columns on mobile, 4 on desktop -->
+     <div id="tracks-grid" class="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-6"><!-- Tracks will be rendered here -->
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="mt-auto py-12 px-6 border-t border-gray-800" style="background: #0d0d14;">
+    <div class="max-w-7xl mx-auto">
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div>
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center">
+         <svg class="w-6 h-6 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+         </svg>
+        </div><span class="font-display font-bold text-xl text-white">Trakflick</span>
+       </div>
+       <p class="text-gray-400 text-sm">Premium cinematic soundtracks and sound effects for film, TV, and digital media productions.</p>
+      </div>
+      <div>
+       <h4 class="font-semibold text-white mb-4">Company</h4>
+       <ul class="space-y-2">
+        <li><a href="#about" class="text-gray-400 hover:text-orange-400 transition-colors text-sm">About Us</a></li>
+        <li><a href="#contact" class="text-gray-400 hover:text-orange-400 transition-colors text-sm">Contact Us</a></li>
+       </ul>
+      </div>
+      <div>
+       <h4 class="font-semibold text-white mb-4">Legal</h4>
+       <ul class="space-y-2">
+        <li><a href="#privacy" id="footer-privacy" class="text-gray-400 hover:text-orange-400 transition-colors text-sm">Privacy Policy</a></li>
+        <li><a href="#terms" id="footer-terms" class="text-gray-400 hover:text-orange-400 transition-colors text-sm">Terms of Service</a></li>
+       </ul>
+      </div>
+     </div>
+     <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-gray-500 text-sm">© 2025 Trakflick. All rights reserved.</p><a href="https://github.com/jamesdev" target="_blank" rel="noopener noreferrer" class="text-orange-400 hover:text-orange-300 transition-colors text-sm font-medium"> Built by James Dev </a>
+     </div>
+    </div>
+   </footer>
+  </div><!-- Track Details Modal -->
+  <div id="track-modal" class="fixed inset-0 z-50 hidden">
+   <div class="modal-backdrop absolute inset-0" id="modal-backdrop"></div>
+   <div class="absolute inset-0 flex items-center justify-center p-4 overflow-auto">
+    <div class="bg-[#15151f] rounded-2xl max-w-2xl w-full max-h-[90%] overflow-auto relative"><button id="close-modal" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors z-10">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
+     <div id="modal-content"><!-- Modal content will be rendered here -->
+     </div>
+    </div>
+   </div>
+  </div><!-- Cart Modal -->
+  <div id="cart-modal" class="fixed inset-0 z-50 hidden">
+   <div class="modal-backdrop absolute inset-0" id="cart-backdrop"></div>
+   <div class="absolute inset-0 flex items-center justify-center p-4 overflow-auto">
+    <div class="bg-[#15151f] rounded-2xl max-w-lg w-full max-h-[90%] overflow-auto relative"><button id="close-cart" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors z-10">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
+     <div id="cart-content" class="p-8"><!-- Cart content will be rendered here -->
+     </div>
+    </div>
+   </div>
+  </div><!-- Payment Modal -->
+  <div id="payment-modal" class="fixed inset-0 z-50 hidden">
+   <div class="modal-backdrop absolute inset-0" id="payment-backdrop"></div>
+   <div class="absolute inset-0 flex items-center justify-center p-4 overflow-auto">
+    <div class="bg-[#15151f] rounded-2xl max-w-lg w-full max-h-[90%] overflow-auto relative"><button id="close-payment" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors z-10">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
+     <div id="payment-content" class="p-8"><!-- Payment content will be rendered here -->
+     </div>
+    </div>
+   </div>
+  </div><!-- About Us Modal -->
+  <div id="about-modal" class="fixed inset-0 z-50 hidden">
+   <div class="modal-backdrop absolute inset-0" id="about-backdrop"></div>
+   <div class="absolute inset-0 flex items-center justify-center p-4 overflow-auto">
+    <div class="bg-[#15151f] rounded-2xl max-w-2xl w-full max-h-[90%] overflow-auto relative"><button id="close-about" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors z-10">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
+     <div class="p-8">
+      <h2 class="font-display text-3xl font-bold text-white mb-6">About Trakflick</h2>
+      <div class="space-y-4 text-gray-300">
+       <p>Trakflick is the premier marketplace for cinematic soundtracks and sound effects, designed specifically for film, television, and digital media professionals.</p>
+       <p>Founded in 2025, we bridge the gap between talented composers and creative professionals who need high-quality audio for their projects.</p>
+       <h3 class="font-display text-xl font-semibold text-white mt-6 mb-3">Our Mission</h3>
+       <p>To democratize access to premium cinematic audio while ensuring fair compensation for composers. We believe every production, regardless of budget, deserves world-class sound.</p>
+       <h3 class="font-display text-xl font-semibold text-white mt-6 mb-3">What Makes Us Different</h3>
+       <ul class="list-disc list-inside space-y-2">
+        <li>Curated library of professional-grade tracks</li>
+        <li>5-in-1 bundles for maximum creative flexibility</li>
+        <li>Simple universal licensing with lifetime access</li>
+        <li>High-fidelity WAV and MP3 downloads</li>
+        <li>Dedicated support for productions of all sizes</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div><!-- Contact Us Modal -->
+  <div id="contact-modal" class="fixed inset-0 z-50 hidden">
+   <div class="modal-backdrop absolute inset-0" id="contact-backdrop"></div>
+   <div class="absolute inset-0 flex items-center justify-center p-4 overflow-auto">
+    <div class="bg-[#15151f] rounded-2xl max-w-lg w-full max-h-[90%] overflow-auto relative"><button id="close-contact" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors z-10">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
+     <div class="p-8">
+      <h2 class="font-display text-3xl font-bold text-white mb-6">Contact Us</h2>
+      <form id="contact-form" class="space-y-4">
+       <div><label for="contact-name" class="block text-sm font-medium text-gray-400 mb-2">Name</label> <input type="text" id="contact-name" class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none" placeholder="Your name">
+       </div>
+       <div><label for="contact-email" class="block text-sm font-medium text-gray-400 mb-2">Email</label> <input type="email" id="contact-email" class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none" placeholder="your@email.com">
+       </div>
+       <div><label for="contact-subject" class="block text-sm font-medium text-gray-400 mb-2">Subject</label> <select id="contact-subject" class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white focus:border-orange-500 focus:outline-none"> <option value="general">General Inquiry</option> <option value="licensing">Licensing Questions</option> <option value="technical">Technical Support</option> <option value="business">Business Partnership</option> </select>
+       </div>
+       <div><label for="contact-message" class="block text-sm font-medium text-gray-400 mb-2">Message</label> <textarea id="contact-message" rows="4" class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none resize-none" placeholder="How can we help?"></textarea>
+       </div><button type="submit" class="w-full btn-primary py-4 rounded-xl font-semibold text-white">Send Message</button>
+      </form>
+      <div id="contact-success" class="hidden text-center py-8">
+       <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl font-semibold text-white mb-2">Message Sent!</h3>
+       <p class="text-gray-400">We'll get back to you within 24-48 hours.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div><!-- Privacy Policy Modal -->
+  <div id="privacy-modal" class="fixed inset-0 z-50 hidden">
+   <div class="modal-backdrop absolute inset-0" id="privacy-backdrop"></div>
+   <div class="absolute inset-0 flex items-center justify-center p-4 overflow-auto">
+    <div class="bg-[#15151f] rounded-2xl max-w-2xl w-full max-h-[90%] overflow-auto relative"><button id="close-privacy" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors z-10">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
+     <div class="p-8">
+      <h2 class="font-display text-3xl font-bold text-white mb-6">Privacy Policy</h2>
+      <div class="space-y-4 text-gray-300 text-sm">
+       <p class="text-gray-400">Last updated: January 2025</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">1. Information We Collect</h3>
+       <p>We collect information you provide directly, including name, email address, and payment information when making purchases. We also collect usage data such as pages visited, tracks previewed, and search queries.</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">2. How We Use Your Information</h3>
+       <p>Your information is used to process transactions, provide customer support, improve our services, send promotional communications (with your consent), and comply with legal obligations.</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">3. Information Sharing</h3>
+       <p>We do not sell your personal information. We may share data with payment processors, analytics providers, and legal authorities when required by law.</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">4. Data Security</h3>
+       <p>We implement industry-standard security measures including encryption, secure servers, and regular security audits to protect your information.</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">5. Your Rights</h3>
+       <p>You have the right to access, correct, or delete your personal information. You may also opt out of marketing communications at any time.</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">6. Cookies</h3>
+       <p>We use cookies and similar technologies to enhance your experience, analyze usage patterns, and deliver personalized content.</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">7. Contact Us</h3>
+       <p>For privacy-related inquiries, please contact us at privacy@trakflick.com</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div><!-- Terms of Service Modal -->
+  <div id="terms-modal" class="fixed inset-0 z-50 hidden">
+   <div class="modal-backdrop absolute inset-0" id="terms-backdrop"></div>
+   <div class="absolute inset-0 flex items-center justify-center p-4 overflow-auto">
+    <div class="bg-[#15151f] rounded-2xl max-w-2xl w-full max-h-[90%] overflow-auto relative"><button id="close-terms" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors z-10">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
+     <div class="p-8">
+      <h2 class="font-display text-3xl font-bold text-white mb-6">Terms of Service</h2>
+      <div class="space-y-4 text-gray-300 text-sm">
+       <p class="text-gray-400">Last updated: January 2025</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">1. Acceptance of Terms</h3>
+       <p>By accessing or using Trakflick, you agree to be bound by these Terms of Service. If you do not agree, please do not use our services.</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">2. License Grant</h3>
+       <p>Upon purchase, you receive a Universal License granting unlimited commercial use for all media types (Film, TV, Web, Advertisements) with worldwide distribution rights. This license is perpetual and does not require renewal.</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">3. Permitted Uses</h3>
+       <ul class="list-disc list-inside space-y-1">
+        <li>Feature films and documentaries</li>
+        <li>Television shows and streaming content</li>
+        <li>Commercials and advertisements</li>
+        <li>YouTube videos and podcasts</li>
+        <li>Video games and apps</li>
+        <li>Corporate presentations</li>
+       </ul>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">4. Prohibited Uses</h3>
+       <ul class="list-disc list-inside space-y-1">
+        <li>Reselling or redistributing tracks as standalone audio</li>
+        <li>Claiming ownership or registering with content ID systems</li>
+        <li>Use in defamatory, illegal, or harmful content</li>
+       </ul>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">5. Payment &amp; Refunds</h3>
+       <p>All purchases are final. Due to the digital nature of our products, refunds are not available once download links are provided. Contact support for issues with downloads.</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">6. Intellectual Property</h3>
+       <p>All tracks remain the intellectual property of their respective composers. Your license grants usage rights, not ownership of the underlying composition.</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">7. Limitation of Liability</h3>
+       <p>Trakflick is not liable for any indirect, incidental, or consequential damages arising from the use of our platform or licensed content.</p>
+       <h3 class="font-display text-lg font-semibold text-white mt-6">8. Changes to Terms</h3>
+       <p>We reserve the right to modify these terms at any time. Continued use after changes constitutes acceptance of new terms.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      hero_title: 'Cinematic Sound For Your Vision',
+      hero_subtitle: 'Premium soundtracks and sound effects crafted for film, TV, and digital media productions.',
+      site_name: 'Trakflick',
+      background_color: '#0a0a0f',
+      surface_color: '#15151f',
+      text_color: '#e8e8ec',
+      primary_color: '#ff6b35',
+      secondary_color: '#8b5cf6',
+      paystack_public_key: 'pk_live_eb5ee595e010a93de485f92afa7d461a179b489b',
+      store_email: ''
+    };
+
+    // Track data with artwork images and MP3 links
+    const tracksData = [
+      {
+        id: 1,
+        title: "Epic Horizons Bundle",
+        mood: "epic",
+        genre: "orchestral",
+        bpm: 120,
+        duration: "3:45",
+        durationSeconds: 225,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        tags: ["Triumphant", "Heroic", "Adventure"],
+        description: "A powerful orchestral suite featuring soaring strings, thunderous percussion, and brass fanfares. Perfect for trailers, heroic moments, and epic reveals.",
+        bundle: ["Main Theme (3:45)", "Action Edit (2:30)", "Emotional Underscore (4:15)", "30s Trailer Cut", "60s Trailer Cut"]
+      },
+      {
+        id: 2,
+        title: "Midnight Tension Bundle",
+        mood: "tense",
+        genre: "hybrid",
+        bpm: 90,
+        duration: "4:12",
+        durationSeconds: 252,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        tags: ["Suspenseful", "Dark", "Thriller"],
+        description: "Gripping hybrid composition blending electronic pulses with orchestral tension. Ideal for thrillers, chase sequences, and dramatic reveals.",
+        bundle: ["Full Mix (4:12)", "Minimal Version (3:30)", "Build-Up Only (1:45)", "Climax Section (1:00)", "Loop Version (2:00)"]
+      },
+      {
+        id: 3,
+        title: "Ethereal Dreams Bundle",
+        mood: "emotional",
+        genre: "piano",
+        bpm: 70,
+        duration: "5:20",
+        durationSeconds: 320,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+        tags: ["Melancholic", "Beautiful", "Reflective"],
+        description: "Delicate piano melodies woven with subtle strings and ambient textures. Perfect for emotional scenes, memories, and introspective moments.",
+        bundle: ["Piano Solo (5:20)", "With Strings (5:45)", "Ambient Version (6:00)", "Short Edit (2:30)", "Loop (3:00)"]
+      },
+      {
+        id: 4,
+        title: "Cosmic Voyage Bundle",
+        mood: "mysterious",
+        genre: "electronic",
+        bpm: 100,
+        duration: "4:30",
+        durationSeconds: 270,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1614149162883-504ce4d13909?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+        tags: ["Sci-Fi", "Space", "Otherworldly"],
+        description: "Expansive electronic soundscape with synthesized textures and cosmic atmospheres. Ideal for sci-fi sequences, documentaries, and futuristic content.",
+        bundle: ["Full Journey (4:30)", "Intro Section (1:30)", "Mid Build (2:00)", "Climax (1:00)", "Ambient Loop (3:00)"]
+      },
+      {
+        id: 5,
+        title: "Victory Rising Bundle",
+        mood: "uplifting",
+        genre: "orchestral",
+        bpm: 130,
+        duration: "3:15",
+        durationSeconds: 195,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+        tags: ["Inspiring", "Triumph", "Achievement"],
+        description: "Uplifting orchestral piece building from gentle beginnings to triumphant crescendo. Perfect for success stories, sports highlights, and motivational content.",
+        bundle: ["Full Build (3:15)", "Climax Only (1:30)", "Gentle Start (1:45)", "30s Highlight", "60s Highlight"]
+      },
+      {
+        id: 6,
+        title: "Shadow Realm Bundle",
+        mood: "dark",
+        genre: "hybrid",
+        bpm: 85,
+        duration: "4:45",
+        durationSeconds: 285,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+        tags: ["Ominous", "Horror", "Dread"],
+        description: "Dark and foreboding hybrid score with distorted bass, eerie textures, and unsettling atmospheres. Perfect for horror, psychological thrillers, and villainous reveals.",
+        bundle: ["Full Mix (4:45)", "Atmospheric Only (3:30)", "Tension Build (2:00)", "Impact Hit (0:30)", "Loop (2:30)"]
+      },
+      {
+        id: 7,
+        title: "Ocean Whispers Bundle",
+        mood: "ambient",
+        genre: "cinematic",
+        bpm: 60,
+        duration: "6:00",
+        durationSeconds: 360,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+        tags: ["Peaceful", "Nature", "Meditative"],
+        description: "Serene ambient composition with flowing pads, gentle waves, and ethereal vocals. Ideal for documentaries, meditation content, and tranquil scenes.",
+        bundle: ["Full Experience (6:00)", "Short Edit (3:00)", "Background Loop (4:00)", "Intro Only (1:30)", "Fade Out (2:00)"]
+      },
+      {
+        id: 8,
+        title: "Neon Pulse Bundle",
+        mood: "tense",
+        genre: "electronic",
+        bpm: 140,
+        duration: "3:30",
+        durationSeconds: 210,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1571974599782-87624638275e?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+        tags: ["Cyberpunk", "Action", "Intense"],
+        description: "High-energy electronic track with pulsing synths, driving beats, and futuristic sound design. Perfect for action sequences, gaming, and tech content.",
+        bundle: ["Full Energy (3:30)", "Drop Section (1:30)", "Build Up (1:00)", "Loop Version (2:00)", "Intro (0:45)"]
+      },
+      {
+        id: 9,
+        title: "Heartstrings Bundle",
+        mood: "emotional",
+        genre: "orchestral",
+        bpm: 65,
+        duration: "5:00",
+        durationSeconds: 300,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+        tags: ["Romantic", "Tender", "Love"],
+        description: "Emotionally rich orchestral piece with sweeping strings and tender melodies. Ideal for romantic scenes, wedding videos, and heartfelt moments.",
+        bundle: ["Full Score (5:00)", "String Quartet (4:15)", "Piano Reduction (4:30)", "Short Edit (2:30)", "Loop (3:00)"]
+      },
+      {
+        id: 10,
+        title: "Ancient Echoes Bundle",
+        mood: "mysterious",
+        genre: "cinematic",
+        bpm: 75,
+        duration: "4:20",
+        durationSeconds: 260,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+        tags: ["Historical", "Discovery", "Wonder"],
+        description: "Evocative cinematic score blending world instruments with orchestral elements. Perfect for historical documentaries, adventure sequences, and discovery moments.",
+        bundle: ["Full Journey (4:20)", "Exploration Theme (2:30)", "Discovery Moment (1:30)", "Ambient Bed (3:00)", "Stinger (0:15)"]
+      },
+      {
+        id: 11,
+        title: "Storm Warning Bundle",
+        mood: "epic",
+        genre: "hybrid",
+        bpm: 110,
+        duration: "3:55",
+        durationSeconds: 235,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
+        tags: ["Powerful", "Battle", "Dramatic"],
+        description: "Intense hybrid score combining massive percussion, aggressive strings, and electronic elements. Perfect for battle scenes, sports highlights, and dramatic confrontations.",
+        bundle: ["Full Storm (3:55)", "Battle Section (2:00)", "Building Tension (1:45)", "Impact Hits", "Loop (2:30)"]
+      },
+      {
+        id: 12,
+        title: "Gentle Light Bundle",
+        mood: "uplifting",
+        genre: "piano",
+        bpm: 80,
+        duration: "4:10",
+        durationSeconds: 250,
+        price: 100,
+        originalPrice: 150,
+        artwork: "https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?w=400&h=400&fit=crop",
+        mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3",
+        tags: ["Hopeful", "Warm", "Optimistic"],
+        description: "Warm and hopeful piano piece with gentle accompaniment. Ideal for positive stories, new beginnings, and feel-good content.",
+        bundle: ["Full Piece (4:10)", "Piano Only (4:10)", "With Orchestra (4:30)", "Short Edit (2:00)", "Loop (2:30)"]
+      }
+    ];
+
+    // State management
+    let cart = [];
+    let currentMood = 'all';
+    let currentGenre = 'all';
+    let searchQuery = '';
+    let currentSlide = 0;
+    let slideInterval;
+    let currentAudio = null;
+    let currentPlayingTrackId = null;
+    let audioProgress = {};
+    let addToCartButtons = {}; // Track button states
+
+    // Show notification at top
+    function showNotification(trackTitle) {
+      const notification = document.getElementById('top-notification');
+      const notificationText = document.getElementById('notification-text');
+      
+      notificationText.textContent = `"${trackTitle}" added to cart!`;
+      notification.classList.remove('hidden', 'notification-exit');
+      notification.classList.add('notification-enter');
+
+      setTimeout(() => {
+        notification.classList.remove('notification-enter');
+        notification.classList.add('notification-exit');
+        setTimeout(() => {
+          notification.classList.add('hidden');
+        }, 300);
+      }, 3000);
+    }
+
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          // Update hero title
+          const heroTitle = document.getElementById('hero-title');
+          if (heroTitle) {
+            heroTitle.innerHTML = `<span class="gradient-text">${(config.hero_title || defaultConfig.hero_title).split(' ').slice(0, 2).join(' ')}</span><br><span class="text-white">${(config.hero_title || defaultConfig.hero_title).split(' ').slice(2).join(' ')}</span>`;
+          }
+          
+          // Update hero subtitle
+          const heroSubtitle = document.getElementById('hero-subtitle');
+          if (heroSubtitle) {
+            heroSubtitle.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+          }
+          
+          // Update site name
+          const siteName = document.getElementById('site-name');
+          if (siteName) {
+            siteName.textContent = config.site_name || defaultConfig.site_name;
+          }
+          
+          // Update document title
+          document.title = `${config.site_name || defaultConfig.site_name} - Cinematic Sound Marketplace`;
+
+          // Apply colors
+          document.documentElement.style.setProperty('--color-bg', config.background_color || defaultConfig.background_color);
+          document.documentElement.style.setProperty('--color-surface', config.surface_color || defaultConfig.surface_color);
+          document.documentElement.style.setProperty('--color-text', config.text_color || defaultConfig.text_color);
+          document.documentElement.style.setProperty('--color-primary', config.primary_color || defaultConfig.primary_color);
+          document.documentElement.style.setProperty('--color-secondary', config.secondary_color || defaultConfig.secondary_color);
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => { config.background_color = value; window.elementSdk.setConfig({ background_color: value }); }
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (value) => { config.surface_color = value; window.elementSdk.setConfig({ surface_color: value }); }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => { config.text_color = value; window.elementSdk.setConfig({ text_color: value }); }
+            },
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => { config.primary_color = value; window.elementSdk.setConfig({ primary_color: value }); }
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => { config.secondary_color = value; window.elementSdk.setConfig({ secondary_color: value }); }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['hero_title', config.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+          ['site_name', config.site_name || defaultConfig.site_name],
+          ['paystack_public_key', config.paystack_public_key || defaultConfig.paystack_public_key],
+          ['store_email', config.store_email || defaultConfig.store_email]
+        ])
+      });
+    }
+
+    // Format time helper
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    // Render track card
+    function renderTrackCard(track) {
+      const isPlaying = currentPlayingTrackId === track.id;
+      const progress = audioProgress[track.id] || 0;
+      const currentTime = (progress / 100) * track.durationSeconds;
+      const discount = Math.round(((track.originalPrice - track.price) / track.originalPrice) * 100);
+      const isInCart = cart.some(item => item.id === track.id);
+      const buttonClass = isInCart ? 'btn-added' : 'btn-primary';
+      const buttonText = isInCart ? 'Added ✓' : 'Add to Cart';
+      
+      return `
+        <div class="card-glow rounded-xl overflow-hidden group" data-track-id="${track.id}">
+          <div class="relative aspect-square">
+            <img src="${track.artwork}" alt="${track.title}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #1a1a25, #0a0a0f)'; this.alt='Image unavailable';">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <button class="play-btn absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" data-track-id="${track.id}">
+              <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform">
+                ${isPlaying ? `
+                  <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                  </svg>
+                ` : `
+                  <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                `}
+              </div>
+            </button>
+            <div class="absolute top-3 right-3 flex gap-2">
+              <span class="px-2 py-1 bg-purple-500/80 backdrop-blur-sm rounded-full text-xs font-medium text-white">5-in-1</span>
+              <span class="px-2 py-1 bg-red-500/80 backdrop-blur-sm rounded-full text-xs font-medium text-white">${discount}% OFF</span>
+            </div>
+          </div>
+          
+          <div class="p-4">
+            <div class="flex items-start justify-between mb-2">
+              <h3 class="font-semibold text-white truncate flex-1 mr-2 text-sm">${track.title}</h3>
+            </div>
+            
+            <div class="flex items-center gap-2 mb-3 text-xs text-gray-400">
+              <span class="px-2 py-1 bg-gray-800 rounded">${track.genre}</span>
+              <span>${track.bpm} BPM</span>
+              <span>${track.duration}</span>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="track-progress h-2 bg-gray-800 rounded-full mb-3 relative overflow-hidden cursor-pointer" data-track-id="${track.id}" data-duration="${track.durationSeconds}">
+              <div class="progress-bar absolute inset-y-0 left-0 rounded-full" style="width: ${progress}%"></div>
+            </div>
+
+            <!-- Time Display -->
+            <div class="flex justify-between items-center text-xs text-gray-400 mb-3">
+              <span class="track-current-time" data-track-id="${track.id}">${formatTime(currentTime)}</span>
+              <span>${track.duration}</span>
+            </div>
+
+            <!-- Volume Control -->
+            <div class="flex items-center gap-2 mb-3">
+              <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+              <input type="range" class="volume-slider flex-1" min="0" max="100" value="80" data-track-id="${track.id}">
+            </div>
+            
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-baseline gap-2">
+                <span class="font-display font-bold text-orange-400 text-sm">$${track.price}</span>
+                <span class="text-xs text-gray-500 line-through">$${track.originalPrice}</span>
+              </div>
+              <div class="flex gap-1">
+                <button class="details-btn p-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors" data-track-id="${track.id}">
+                  <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </button>
+                <button class="add-to-cart-btn ${buttonClass} px-3 py-2 rounded-lg font-medium text-white text-xs transition-all duration-300" data-track-id="${track.id}">
+                  ${buttonText}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Filter and render tracks
+    function filterAndRenderTracks() {
+      const filtered = tracksData.filter(track => {
+        const moodMatch = currentMood === 'all' || track.mood === currentMood;
+        const genreMatch = currentGenre === 'all' || track.genre === currentGenre;
+        const searchMatch = searchQuery === '' || 
+          track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          track.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          track.mood.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          track.genre.toLowerCase().includes(searchQuery.toLowerCase());
+        return moodMatch && genreMatch && searchMatch;
+      });
+
+      const grid = document.getElementById('tracks-grid');
+      grid.innerHTML = filtered.map(renderTrackCard).join('');
+      attachTrackEventListeners();
+    }
+
+    // Attach event listeners to track cards
+    function attachTrackEventListeners() {
+      // Play buttons
+      document.querySelectorAll('.play-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const trackId = parseInt(btn.dataset.trackId);
+          togglePlay(trackId);
+        });
+      });
+
+      // Progress bar click handlers
+      document.querySelectorAll('.track-progress').forEach(bar => {
+        bar.addEventListener('click', (e) => {
+          const trackId = parseInt(bar.dataset.trackId);
+          const duration = parseFloat(bar.dataset.duration);
+          const rect = bar.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+          const percentage = (clickX / rect.width) * 100;
+          const seekTime = (percentage / 100) * duration;
+          
+          if (currentAudio && currentPlayingTrackId === trackId) {
+            currentAudio.currentTime = seekTime;
+            audioProgress[trackId] = percentage;
+            updateProgressUI(trackId, percentage, seekTime);
+          } else {
+            audioProgress[trackId] = percentage;
+            playTrack(trackId, seekTime);
+          }
+        });
+      });
+
+      // Volume sliders
+      document.querySelectorAll('.volume-slider').forEach(slider => {
+        slider.addEventListener('input', (e) => {
+          const volume = e.target.value / 100;
+          if (currentAudio) {
+            currentAudio.volume = volume;
+          }
+        });
+      });
+
+      // Details buttons
+      document.querySelectorAll('.details-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const trackId = parseInt(btn.dataset.trackId);
+          openTrackModal(trackId);
+        });
+      });
+
+      // Add to cart buttons
+      document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const trackId = parseInt(btn.dataset.trackId);
+          addToCart(trackId, btn);
+        });
+      });
+    }
+
+    // Play/pause track
+    function togglePlay(trackId) {
+      if (currentPlayingTrackId === trackId && currentAudio) {
+        if (currentAudio.paused) {
+          currentAudio.play();
+        } else {
+          currentAudio.pause();
+        }
+      } else {
+        playTrack(trackId);
+      }
+    }
+
+    // Play track
+    function playTrack(trackId, startTime = 0) {
+      const track = tracksData.find(t => t.id === trackId);
+      if (!track) return;
+
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.src = '';
+        currentAudio = null;
+      }
+
+      currentAudio = new Audio(track.mp3);
+      currentPlayingTrackId = trackId;
+      currentAudio.currentTime = startTime;
+      
+      const volumeSlider = document.querySelector(`.volume-slider[data-track-id="${trackId}"]`);
+      if (volumeSlider) {
+        currentAudio.volume = volumeSlider.value / 100;
+      }
+
+      currentAudio.addEventListener('timeupdate', () => {
+        const progress = (currentAudio.currentTime / track.durationSeconds) * 100;
+        audioProgress[trackId] = progress;
+        updateProgressUI(trackId, progress, currentAudio.currentTime);
+      });
+
+      currentAudio.addEventListener('ended', () => {
+        currentPlayingTrackId = null;
+        audioProgress[trackId] = 0;
+        filterAndRenderTracks();
+      });
+
+      currentAudio.addEventListener('play', () => {
+        filterAndRenderTracks();
+      });
+
+      currentAudio.addEventListener('pause', () => {
+        filterAndRenderTracks();
+      });
+
+      currentAudio.play();
+    }
+
+    // Update progress UI
+    function updateProgressUI(trackId, progress, currentTime) {
+      const progressBar = document.querySelector(`.track-progress[data-track-id="${trackId}"]`);
+      const timeDisplay = document.querySelector(`.track-current-time[data-track-id="${trackId}"]`);
+      
+      if (progressBar) {
+        const progressFill = progressBar.querySelector('.progress-bar');
+        if (progressFill) {
+          progressFill.style.width = `${progress}%`;
+        }
+      }
+
+      if (timeDisplay) {
+        timeDisplay.textContent = formatTime(currentTime);
+      }
+    }
+
+    // Open track details modal
+    function openTrackModal(trackId) {
+      const track = tracksData.find(t => t.id === trackId);
+      if (!track) return;
+
+      const modal = document.getElementById('track-modal');
+      const content = document.getElementById('modal-content');
+      const discount = Math.round(((track.originalPrice - track.price) / track.originalPrice) * 100);
+
+      content.innerHTML = `
+        <div class="relative">
+          <img src="${track.artwork}" alt="${track.title}" class="w-full h-64 object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #1a1a25, #0a0a0f)'; this.alt='Image unavailable';">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#15151f] via-transparent to-transparent"></div>
+        </div>
+        <div class="p-8 -mt-16 relative">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm font-medium">5-in-1 Bundle</span>
+              <h2 class="font-display text-2xl font-bold text-white mt-3">${track.title}</h2>
+            </div>
+            <div class="text-right">
+              <span class="block font-display text-3xl font-bold text-orange-400">$${track.price}</span>
+              <span class="text-sm text-gray-500 line-through">$${track.originalPrice}</span>
+              <span class="block text-sm text-red-400 font-semibold mt-1">${discount}% OFF</span>
+            </div>
+          </div>
+          
+          <p class="text-gray-300 mb-6">${track.description}</p>
+          
+          <div class="flex flex-wrap gap-2 mb-6">
+            ${track.tags.map(tag => `<span class="px-3 py-1 bg-gray-800 rounded-full text-sm text-gray-300">${tag}</span>`).join('')}
+          </div>
+          
+          <div class="grid grid-cols-3 gap-4 mb-6 p-4 bg-gray-800/50 rounded-xl">
+            <div class="text-center">
+              <span class="block text-2xl font-bold text-white">${track.bpm}</span>
+              <span class="text-sm text-gray-400">BPM</span>
+            </div>
+            <div class="text-center">
+              <span class="block text-2xl font-bold text-white">${track.duration}</span>
+              <span class="text-sm text-gray-400">Duration</span>
+            </div>
+            <div class="text-center">
+              <span class="block text-2xl font-bold text-white capitalize">${track.genre}</span>
+              <span class="text-sm text-gray-400">Genre</span>
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <h3 class="font-semibold text-white mb-3">Bundle Includes:</h3>
+            <ul class="space-y-2">
+              ${track.bundle.map(item => `
+                <li class="flex items-center gap-2 text-gray-300">
+                  <svg class="w-5 h-5 text-orange-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  ${item}
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+          
+          <div class="p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl mb-6">
+            <h3 class="font-semibold text-orange-400 mb-2">Universal License - $${track.price}</h3>
+            <ul class="space-y-1 text-sm text-gray-300">
+              <li>✓ Unlimited commercial use</li>
+              <li>✓ All media types (Film, TV, Web, Ads)</li>
+              <li>✓ Worldwide distribution rights</li>
+              <li>✓ High-quality WAV + MP3 files</li>
+              <li>✓ Lifetime license, no renewals</li>
+            </ul>
+          </div>
+          
+          <button class="modal-add-to-cart w-full btn-primary py-4 rounded-xl font-semibold text-white text-lg" data-track-id="${track.id}">
+            Add to Cart - $${track.price}
+          </button>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+
+      content.querySelector('.modal-add-to-cart').addEventListener('click', () => {
+        addToCart(trackId);
+        modal.classList.add('hidden');
+      });
+    }
+
+    // Add to cart with button state animation
+    function addToCart(trackId, button = null) {
+      const track = tracksData.find(t => t.id === trackId);
+      if (!track) return;
+
+      const isAlreadyInCart = cart.find(item => item.id === trackId);
+      
+      if (!isAlreadyInCart) {
+        cart.push(track);
+        updateCartUI();
+        showNotification(track.title);
+        
+        // Update button state
+        if (button) {
+          updateButtonState(button, true);
+        } else {
+          // Find button in grid and update it
+          const gridButton = document.querySelector(`.add-to-cart-btn[data-track-id="${trackId}"]`);
+          if (gridButton) {
+            updateButtonState(gridButton, true);
+          }
+        }
+      }
+    }
+
+    // Update button appearance and text
+    function updateButtonState(button, isAdded) {
+      if (isAdded) {
+        button.classList.remove('btn-primary');
+        button.classList.add('btn-added');
+        button.textContent = 'Added ✓';
+        
+        // Revert after 2 seconds
+        setTimeout(() => {
+          button.classList.remove('btn-added');
+          button.classList.add('btn-primary');
+          button.textContent = 'Add to Cart';
+        }, 2000);
+      }
+    }
+
+    // Remove from cart
+    function removeFromCart(trackId) {
+      cart = cart.filter(item => item.id !== trackId);
+      updateCartUI();
+      renderCartContent();
+    }
+
+    // Update cart UI
+    function updateCartUI() {
+      const cartCount = document.getElementById('cart-count');
+      if (cart.length > 0) {
+        cartCount.textContent = cart.length;
+        cartCount.classList.remove('hidden');
+      } else {
+        cartCount.classList.add('hidden');
+      }
+    }
+
+    // Render cart content
+    function renderCartContent() {
+      const content = document.getElementById('cart-content');
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+      if (cart.length === 0) {
+        content.innerHTML = `
+          <div class="text-center py-8">
+            <svg class="w-16 h-16 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            <h3 class="font-display text-xl font-semibold text-white mb-2">Your cart is empty</h3>
+            <p class="text-gray-400">Browse our tracks and add some to your cart!</p>
+          </div>
+        `;
+        return;
+      }
+
+      content.innerHTML = `
+        <h2 class="font-display text-2xl font-bold text-white mb-6">Your Cart</h2>
+        <div class="space-y-4 mb-6">
+          ${cart.map(item => `
+            <div class="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl">
+              <img src="${item.artwork}" alt="${item.title}" class="w-16 h-16 rounded-lg object-cover" loading="lazy" onerror="this.style.background='#1a1a25'; this.alt='Image unavailable';">
+              <div class="flex-1">
+                <h4 class="font-medium text-white">${item.title}</h4>
+                <span class="text-sm text-gray-400">5-in-1 Bundle</span>
+              </div>
+              <span class="font-semibold text-orange-400">$${item.price}</span>
+              <button class="remove-from-cart p-2 text-gray-400 hover:text-red-400 transition-colors" data-track-id="${item.id}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+            </div>
+          `).join('')}
+        </div>
+        <div class="border-t border-gray-800 pt-4 mb-6">
+          <div class="flex justify-between items-center text-lg">
+            <span class="text-gray-300">Total</span>
+            <span class="font-display font-bold text-2xl text-orange-400">$${total}</span>
+          </div>
+        </div>
+        <button id="proceed-to-payment" class="w-full btn-primary py-4 rounded-xl font-semibold text-white">
+          Proceed to Payment
+        </button>
+      `;
+
+      content.querySelectorAll('.remove-from-cart').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const trackId = parseInt(btn.dataset.trackId);
+          removeFromCart(trackId);
+        });
+      });
+
+      document.getElementById('proceed-to-payment').addEventListener('click', () => {
+        document.getElementById('cart-modal').classList.add('hidden');
+        openPaymentModal();
+      });
+    }
+
+    // Open payment modal with Paystack
+    function openPaymentModal() {
+      const modal = document.getElementById('payment-modal');
+      const content = document.getElementById('payment-content');
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      const totalInKobo = total * 100;
+      const config = window.elementSdk?.config || defaultConfig;
+      const publicKey = config.paystack_public_key || defaultConfig.paystack_public_key;
+      const storeEmail = config.store_email || defaultConfig.store_email;
+
+      content.innerHTML = `
+        <h2 class="font-display text-2xl font-bold text-white mb-6">Complete Purchase</h2>
+        
+        <div class="p-4 bg-gray-800/50 rounded-xl mb-6">
+          <h3 class="font-semibold text-white mb-2">Order Summary</h3>
+          <div class="space-y-2 mb-4">
+            ${cart.map(item => `
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-300">${item.title}</span>
+                <span class="text-white">$${item.price}</span>
+              </div>
+            `).join('')}
+          </div>
+          <div class="border-t border-gray-700 pt-2 flex justify-between">
+            <span class="font-semibold text-white">Total</span>
+            <span class="font-display font-bold text-xl text-orange-400">$${total}</span>
+          </div>
+        </div>
+        
+        <div class="p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl mb-6">
+          <h3 class="font-semibold text-orange-400 mb-2">Universal License Included</h3>
+          <ul class="space-y-1 text-sm text-gray-300">
+            <li>✓ Unlimited commercial use</li>
+            <li>✓ All media types (Film, TV, Web, Ads)</li>
+            <li>✓ Worldwide distribution rights</li>
+            <li>✓ High-quality WAV + MP3 files</li>
+            <li>✓ Lifetime license, no renewals</li>
+          </ul>
+        </div>
+
+        <div class="mb-6">
+          <label for="customer-email" class="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
+          <input type="email" id="customer-email" class="w-full px-4 py-3 bg-[#0a0a0f] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none" placeholder="your@email.com" value="${storeEmail}">
+        </div>
+
+        <div class="mb-6">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="terms-checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 text-orange-500 focus:ring-orange-500">
+            <span class="text-sm text-gray-300">
+              I have read and agree to the 
+              <button type="button" class="text-orange-400 hover:underline open-terms-from-payment">Terms of Service</button> 
+              and 
+              <button type="button" class="text-orange-400 hover:underline open-privacy-from-payment">Privacy Policy</button>
+            </span>
+          </label>
+          <p id="terms-error" class="text-red-400 text-sm mt-2 hidden">Please accept the Terms of Service and Privacy Policy to continue</p>
+        </div>
+        
+        <button id="pay-with-paystack" class="w-full btn-primary py-4 rounded-xl font-semibold text-white opacity-50 cursor-not-allowed flex items-center justify-center gap-2" disabled>
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          Pay with Paystack - ₦${Math.round(totalInKobo / 100)}
+        </button>
+        
+        <p class="text-center text-xs text-gray-500 mt-4">
+          Secure payment powered by Paystack
+        </p>
+      `;
+
+      modal.classList.remove('hidden');
+
+      const termsCheckbox = document.getElementById('terms-checkbox');
+      const payButton = document.getElementById('pay-with-paystack');
+      const termsError = document.getElementById('terms-error');
+      const emailInput = document.getElementById('customer-email');
+
+      termsCheckbox.addEventListener('change', () => {
+        if (termsCheckbox.checked && emailInput.value) {
+          payButton.disabled = false;
+          payButton.classList.remove('opacity-50', 'cursor-not-allowed');
+          termsError.classList.add('hidden');
+        } else {
+          payButton.disabled = true;
+          payButton.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+      });
+
+      emailInput.addEventListener('input', () => {
+        if (termsCheckbox.checked && emailInput.value) {
+          payButton.disabled = false;
+          payButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        } else {
+          payButton.disabled = true;
+          payButton.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+      });
+
+      content.querySelector('.open-terms-from-payment').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('terms-modal').classList.remove('hidden');
+      });
+
+      content.querySelector('.open-privacy-from-payment').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('privacy-modal').classList.remove('hidden');
+      });
+
+      payButton.addEventListener('click', () => {
+        if (!termsCheckbox.checked) {
+          termsError.classList.remove('hidden');
+          return;
+        }
+
+        const email = emailInput.value;
+        if (!email) {
+          showNotification('Please enter your email address');
+          return;
+        }
+
+        if (publicKey === 'pk_test_xxxxxxxxxxxx') {
+          showNotification('Please set your Paystack Public Key in settings');
+          return;
+        }
+
+        // Show loading state
+        payButton.disabled = true;
+        payButton.innerHTML = '<div class="spinner"></div> Processing...';
+
+        // Initialize Paystack payment
+        const handler = PaystackPop.setup({
+          key: publicKey,
+          email: email,
+          amount: totalInKobo,
+          ref: 'TRAKFLICK_' + Math.floor((Math.random() * 1000000000) + 1),
+          currency: 'NGN',
+          onClose: function() {
+            payButton.disabled = false;
+            payButton.innerHTML = `
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              Pay with Paystack - ₦${Math.round(totalInKobo / 100)}
+            `;
+            showNotification('Payment cancelled');
+          },
+          onSuccess: function(response) {
+            content.innerHTML = `
+              <div class="text-center py-8">
+                <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold text-white mb-2">Payment Successful!</h3>
+                <p class="text-gray-400 mb-2">Thank you for your purchase.</p>
+                <p class="text-sm text-gray-500 mb-6">Reference: ${response.reference}</p>
+                <p class="text-gray-400 mb-6">Your download links have been sent to ${email}</p>
+                <button id="close-payment-success" class="btn-primary px-8 py-3 rounded-xl font-semibold text-white">
+                  Continue Browsing
+                </button>
+              </div>
+            `;
+
+            cart = [];
+            updateCartUI();
+
+            document.getElementById('close-payment-success').addEventListener('click', () => {
+              modal.classList.add('hidden');
+            });
+          }
+        });
+
+        handler.openIframe();
+      });
+    }
+
+    // Hero slider
+    function startSlider() {
+      slideInterval = setInterval(() => {
+        currentSlide = (currentSlide + 1) % 3;
+        updateSlider();
+      }, 5000);
+    }
+
+    function updateSlider() {
+      document.querySelectorAll('.slide').forEach((slide, index) => {
+        slide.style.opacity = index === currentSlide ? '1' : '0';
+      });
+      document.querySelectorAll('.slide-indicator').forEach((indicator, index) => {
+        indicator.classList.toggle('active', index === currentSlide);
+      });
+    }
+
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      filterAndRenderTracks();
+      startSlider();
+
+      document.getElementById('logo-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      document.getElementById('search-input').addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        filterAndRenderTracks();
+      });
+
+      document.querySelectorAll('.filter-chip:not(.genre-chip)').forEach(chip => {
+        chip.addEventListener('click', () => {
+          document.querySelectorAll('.filter-chip:not(.genre-chip)').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          currentMood = chip.dataset.mood;
+          filterAndRenderTracks();
+        });
+      });
+
+      document.querySelectorAll('.genre-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          currentGenre = chip.dataset.genre;
+          filterAndRenderTracks();
+        });
+      });
+
+      document.querySelectorAll('.slide-indicator').forEach(indicator => {
+        indicator.addEventListener('click', () => {
+          clearInterval(slideInterval);
+          currentSlide = parseInt(indicator.dataset.slide);
+          updateSlider();
+          startSlider();
+        });
+      });
+
+      document.getElementById('cart-btn').addEventListener('click', () => {
+        renderCartContent();
+        document.getElementById('cart-modal').classList.remove('hidden');
+      });
+
+      document.getElementById('close-cart').addEventListener('click', () => {
+        document.getElementById('cart-modal').classList.add('hidden');
+      });
+
+      document.getElementById('cart-backdrop').addEventListener('click', () => {
+        document.getElementById('cart-modal').classList.add('hidden');
+      });
+
+      document.getElementById('close-modal').addEventListener('click', () => {
+        document.getElementById('track-modal').classList.add('hidden');
+      });
+
+      document.getElementById('modal-backdrop').addEventListener('click', () => {
+        document.getElementById('track-modal').classList.add('hidden');
+      });
+
+      document.getElementById('close-payment').addEventListener('click', () => {
+        document.getElementById('payment-modal').classList.add('hidden');
+      });
+
+      document.getElementById('payment-backdrop').addEventListener('click', () => {
+        document.getElementById('payment-modal').classList.add('hidden');
+      });
+
+      document.querySelectorAll('a[href="#about"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.getElementById('about-modal').classList.remove('hidden');
+        });
+      });
+
+      document.getElementById('close-about').addEventListener('click', () => {
+        document.getElementById('about-modal').classList.add('hidden');
+      });
+
+      document.getElementById('about-backdrop').addEventListener('click', () => {
+        document.getElementById('about-modal').classList.add('hidden');
+      });
+
+      document.querySelectorAll('a[href="#contact"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.getElementById('contact-modal').classList.remove('hidden');
+        });
+      });
+
+      document.getElementById('close-contact').addEventListener('click', () => {
+        document.getElementById('contact-modal').classList.add('hidden');
+      });
+
+      document.getElementById('contact-backdrop').addEventListener('click', () => {
+        document.getElementById('contact-modal').classList.add('hidden');
+      });
+
+      document.getElementById('contact-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        document.getElementById('contact-form').classList.add('hidden');
+        document.getElementById('contact-success').classList.remove('hidden');
+      });
+
+      document.getElementById('footer-privacy').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('privacy-modal').classList.remove('hidden');
+      });
+
+      document.getElementById('close-privacy').addEventListener('click', () => {
+        document.getElementById('privacy-modal').classList.add('hidden');
+      });
+
+      document.getElementById('privacy-backdrop').addEventListener('click', () => {
+        document.getElementById('privacy-modal').classList.add('hidden');
+      });
+
+      document.getElementById('footer-terms').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('terms-modal').classList.remove('hidden');
+      });
+
+      document.getElementById('close-terms').addEventListener('click', () => {
+        document.getElementById('terms-modal').classList.add('hidden');
+      });
+
+      document.getElementById('terms-backdrop').addEventListener('click', () => {
+        document.getElementById('terms-modal').classList.add('hidden');
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd6d3c721e841e2',t:'MTc3MTAxMTkzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
