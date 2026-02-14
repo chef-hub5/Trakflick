@@ -566,7 +566,8 @@
       primary_color: '#ff6b35',
       secondary_color: '#8b5cf6',
       paystack_public_key: 'pk_live_eb5ee595e010a93de485f92afa7d461a179b489b',
-      store_email: ''
+      store_email: '',
+      google_apps_script_url: 'https://script.google.com/macros/s/AKfycbwWHPUzhkwkTFV2m93rHJobLVYallurEKwnmphBGTIZWDG-Q_BMTGroM4oEEG7g0NbA/exec'
     };
 
     // Track data - ALL PRICES IN NAIRA
@@ -881,7 +882,8 @@
           ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
           ['site_name', config.site_name || defaultConfig.site_name],
           ['paystack_public_key', config.paystack_public_key || defaultConfig.paystack_public_key],
-          ['store_email', config.store_email || defaultConfig.store_email]
+          ['store_email', config.store_email || defaultConfig.store_email],
+          ['google_apps_script_url', config.google_apps_script_url || defaultConfig.google_apps_script_url]
         ])
       });
     }
@@ -1704,27 +1706,52 @@
       document.getElementById('contact-form').addEventListener('submit', (e) => {
         e.preventDefault();
         
-        const name = document.getElementById('contact-name');
-        const email = document.getElementById('contact-email');
-        const subject = document.getElementById('contact-subject');
-        const message = document.getElementById('contact-message');
+        const name = document.getElementById('contact-name').value;
+        const email = document.getElementById('contact-email').value;
+        const subject = document.getElementById('contact-subject').value;
+        const message = document.getElementById('contact-message').value;
 
         document.getElementById('contact-form').classList.add('hidden');
         document.getElementById('contact-sending').classList.remove('hidden');
 
-        setTimeout(() => {
-          document.getElementById('contact-sending').classList.add('hidden');
-          document.getElementById('contact-success').classList.remove('hidden');
+        // Get Google Apps Script URL from config
+        const config = window.elementSdk?.config || defaultConfig;
+        const scriptUrl = config.google_apps_script_url || defaultConfig.google_apps_script_url;
 
+        // Send to Google Apps Script
+        fetch(scriptUrl, {
+          method: 'POST',
+          body: JSON.stringify({
+            type: 'contact',
+            name: name,
+            email: email,
+            subject: subject,
+            message: message,
+            timestamp: new Date().toISOString()
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
           setTimeout(() => {
-            name.value = '';
-            email.value = '';
-            subject.value = '';
-            message.value = '';
-            document.getElementById('contact-form').classList.remove('hidden');
-            document.getElementById('contact-success').classList.add('hidden');
-          }, 3000);
-        }, 4000);
+            document.getElementById('contact-sending').classList.add('hidden');
+            document.getElementById('contact-success').classList.remove('hidden');
+
+            setTimeout(() => {
+              document.getElementById('contact-name').value = '';
+              document.getElementById('contact-email').value = '';
+              document.getElementById('contact-subject').value = '';
+              document.getElementById('contact-message').value = '';
+              document.getElementById('contact-form').classList.remove('hidden');
+              document.getElementById('contact-success').classList.add('hidden');
+            }, 3000);
+          }, 1500);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById('contact-sending').classList.add('hidden');
+          document.getElementById('contact-form').classList.remove('hidden');
+          showNotification('Error sending message. Please try again.');
+        });
       });
 
       document.getElementById('footer-privacy').addEventListener('click', (e) => {
@@ -1754,5 +1781,5 @@
       });
     });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd7910712af593a',t:'MTc3MTAxOTY5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cdedce8753541e2',t:'MTc3MTA5NjE5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
