@@ -339,7 +339,7 @@
      </div><!-- Mood Filters -->
      <div class="mb-6 sm:mb-8">
       <h3 class="text-xs sm:text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Filter by Mood</h3>
-      <div class="flex flex-wrap gap-2"><button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300 active" data-mood="all">All</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="epic">Epic</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="emotional">Emotional</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="tense">Tense</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="mysterious">Mysterious</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="uplifting">Uplifting</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="dark">Dark</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="ambient">Ambient</button>
+      <div class="flex flex-wrap gap-2"><button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300 active" data-mood="all">All</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="epic">Epic</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="emotional">Emotional</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="tense">Tense</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="mysterious">Mysterious</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="uplifting">Uplifting</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="dark">Dark</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="ambient">Ambient</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="heroic">Heroic</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="triumphant">Triumphant</button>
       </div>
      </div><!-- Genre Filters -->
      <div class="mb-6 sm:mb-8">
@@ -432,8 +432,8 @@
      <div class="p-4 sm:p-8">
       <h2 class="font-display text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6">About Trakflick</h2>
       <div class="space-y-3 sm:space-y-4 text-gray-300 text-xs sm:text-base">
-       <p>Trakflick is the premier marketplace for cinematic soundtracks and sound effects, designed specifically for film, television, content creators and digital media professionals.</p>
-       <p>Founded in 2025, we bridge the gap between talented composers, content creators and creative professionals who need high-quality audio for their projects.</p>
+       <p>Trakflick is the premier marketplace for cinematic soundtracks and sound effects, designed specifically for film, television, and digital media professionals.</p>
+       <p>Founded in 2025, we bridge the gap between talented composers and creative professionals who need high-quality audio for their projects.</p>
        <h3 class="font-display text-lg sm:text-xl font-semibold text-white mt-4 sm:mt-6 mb-2 sm:mb-3">Our Mission</h3>
        <p>To democratize access to premium cinematic audio while ensuring fair compensation for composers. We believe every production, regardless of budget, deserves world-class sound.</p>
        <h3 class="font-display text-lg sm:text-xl font-semibold text-white mt-4 sm:mt-6 mb-2 sm:mb-3">What Makes Us Different</h3>
@@ -575,7 +575,7 @@
       {
         id: 1,
         title: "Epic Horizons Bundle",
-        mood: "epic",
+        mood: ["epic", "uplifting", "emotional", "triumphant", "heroic"],
         genre: "orchestral",
         bpm: 120,
         duration: "3:45",
@@ -586,12 +586,12 @@
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
         tags: ["Triumphant", "Heroic", "Adventure"],
         description: "A powerful orchestral suite featuring soaring strings, thunderous percussion, and brass fanfares. Perfect for trailers, heroic moments, and epic reveals.",
-        bundle: ["Main Theme (3:45)", "Action Edit (2:30)", "Emotional Underscore (4:15)", "30s Trailer Cut", "60s Trailer Cut"]
+        bundle: ["Epic Main Theme (3:45)", "Uplifting Finale (2:30)", "Action Edit (2:30)", "Triumphant Underscore (4:15)", "30s & 60s Cuts"]
       },
       {
         id: 2,
         title: "Midnight Tension Bundle",
-        mood: "tense",
+        mood: ["tense", "dark", "mysterious", "suspenseful", "ominous"],
         genre: "hybrid",
         bpm: 90,
         duration: "4:12",
@@ -602,12 +602,12 @@
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
         tags: ["Suspenseful", "Dark", "Thriller"],
         description: "Gripping hybrid composition blending electronic pulses with orchestral tension. Ideal for thrillers, chase sequences, and dramatic reveals.",
-        bundle: ["Full Mix (4:12)", "Minimal Version (3:30)", "Build-Up Only (1:45)", "Climax Section (1:00)", "Loop Version (2:00)"]
+        bundle: ["Tense Mix (4:12)", "Dark Version (4:30)", "Build-Up Only (1:45)", "Climax Section (1:00)", "Loop (2:00)"]
       },
       {
         id: 3,
         title: "Ethereal Dreams Bundle",
-        mood: "emotional",
+        mood: ["emotional", "ambient", "peaceful", "reflective", "tender"],
         genre: "piano",
         bpm: 70,
         duration: "5:20",
@@ -623,7 +623,7 @@
       {
         id: 4,
         title: "Cosmic Voyage Bundle",
-        mood: "mysterious",
+        mood: ["mysterious", "ambient", "ethereal", "otherworldly", "expansive"],
         genre: "electronic",
         bpm: 100,
         duration: "4:30",
@@ -634,12 +634,12 @@
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
         tags: ["Sci-Fi", "Space", "Otherworldly"],
         description: "Expansive electronic soundscape with synthesized textures and cosmic atmospheres. Ideal for sci-fi sequences, documentaries, and futuristic content.",
-        bundle: ["Full Journey (4:30)", "Intro Section (1:30)", "Mid Build (2:00)", "Climax (1:00)", "Ambient Loop (3:00)"]
+        bundle: ["Mysterious Journey (4:30)", "Ambient Space (4:00)", "Mid Build (2:00)", "Climax (1:00)", "Ambient Loop (3:00)"]
       },
       {
         id: 5,
         title: "Victory Rising Bundle",
-        mood: "uplifting",
+        mood: ["uplifting", "epic", "inspiring", "triumphant", "energetic"],
         genre: "orchestral",
         bpm: 130,
         duration: "3:15",
@@ -650,12 +650,12 @@
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
         tags: ["Inspiring", "Triumph", "Achievement"],
         description: "Uplifting orchestral piece building from gentle beginnings to triumphant crescendo. Perfect for success stories, sports highlights, and motivational content.",
-        bundle: ["Full Build (3:15)", "Climax Only (1:30)", "Gentle Start (1:45)", "30s Highlight", "60s Highlight"]
+        bundle: ["Uplifting Build (3:15)", "Epic Climax (1:30)", "Gentle Start (1:45)", "30s Highlight", "60s Highlight"]
       },
       {
         id: 6,
         title: "Shadow Realm Bundle",
-        mood: "dark",
+        mood: ["dark", "mysterious", "ominous", "tense", "haunting"],
         genre: "hybrid",
         bpm: 85,
         duration: "4:45",
@@ -666,12 +666,12 @@
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
         tags: ["Ominous", "Horror", "Dread"],
         description: "Dark and foreboding hybrid score with distorted bass, eerie textures, and unsettling atmospheres. Perfect for horror, psychological thrillers, and villainous reveals.",
-        bundle: ["Full Mix (4:45)", "Atmospheric Only (3:30)", "Tension Build (2:00)", "Impact Hit (0:30)", "Loop (2:30)"]
+        bundle: ["Dark Mix (4:45)", "Mysterious Tension (3:30)", "Build (2:00)", "Impact Hit (0:30)", "Loop (2:30)"]
       },
       {
         id: 7,
         title: "Ocean Whispers Bundle",
-        mood: "ambient",
+        mood: ["ambient", "peaceful", "serene", "meditative", "tranquil"],
         genre: "cinematic",
         bpm: 60,
         duration: "6:00",
@@ -687,7 +687,7 @@
       {
         id: 8,
         title: "Neon Pulse Bundle",
-        mood: "tense",
+        mood: ["tense", "epic", "energetic", "intense", "futuristic"],
         genre: "electronic",
         bpm: 140,
         duration: "3:30",
@@ -698,12 +698,12 @@
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
         tags: ["Cyberpunk", "Action", "Intense"],
         description: "High-energy electronic track with pulsing synths, driving beats, and futuristic sound design. Perfect for action sequences, gaming, and tech content.",
-        bundle: ["Full Energy (3:30)", "Drop Section (1:30)", "Build Up (1:00)", "Loop Version (2:00)", "Intro (0:45)"]
+        bundle: ["Tense Energy (3:30)", "Epic Drop (1:30)", "Build Up (1:00)", "Loop Version (2:00)", "Intro (0:45)"]
       },
       {
         id: 9,
         title: "Heartstrings Bundle",
-        mood: "emotional",
+        mood: ["emotional", "uplifting", "tender", "romantic", "warm"],
         genre: "orchestral",
         bpm: 65,
         duration: "5:00",
@@ -714,12 +714,12 @@
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
         tags: ["Romantic", "Tender", "Love"],
         description: "Emotionally rich orchestral piece with sweeping strings and tender melodies. Ideal for romantic scenes, wedding videos, and heartfelt moments.",
-        bundle: ["Full Score (5:00)", "String Quartet (4:15)", "Piano Reduction (4:30)", "Short Edit (2:30)", "Loop (3:00)"]
+        bundle: ["Emotional Score (5:00)", "Uplifting Version (4:30)", "String Quartet (4:15)", "Short Edit (2:30)", "Loop (3:00)"]
       },
       {
         id: 10,
         title: "Ancient Echoes Bundle",
-        mood: "mysterious",
+        mood: ["mysterious", "ethereal", "historical", "contemplative", "majestic"],
         genre: "cinematic",
         bpm: 75,
         duration: "4:20",
@@ -735,7 +735,7 @@
       {
         id: 11,
         title: "Storm Warning Bundle",
-        mood: "epic",
+        mood: ["epic", "tense", "powerful", "dramatic", "intense"],
         genre: "hybrid",
         bpm: 110,
         duration: "3:55",
@@ -746,12 +746,12 @@
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
         tags: ["Powerful", "Battle", "Dramatic"],
         description: "Intense hybrid score combining massive percussion, aggressive strings, and electronic elements. Perfect for battle scenes, sports highlights, and dramatic confrontations.",
-        bundle: ["Full Storm (3:55)", "Battle Section (2:00)", "Building Tension (1:45)", "Impact Hits", "Loop (2:30)"]
+        bundle: ["Epic Storm (3:55)", "Tense Battle (2:00)", "Building (1:45)", "Impact Hits", "Loop (2:30)"]
       },
       {
         id: 12,
         title: "Gentle Light Bundle",
-        mood: "uplifting",
+        mood: ["uplifting", "ambient", "hopeful", "peaceful", "optimistic"],
         genre: "piano",
         bpm: 80,
         duration: "4:10",
@@ -762,7 +762,7 @@
         mp3: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3",
         tags: ["Hopeful", "Warm", "Optimistic"],
         description: "Warm and hopeful piano piece with gentle accompaniment. Ideal for positive stories, new beginnings, and feel-good content.",
-        bundle: ["Full Piece (4:10)", "Piano Only (4:10)", "With Orchestra (4:30)", "Short Edit (2:00)", "Loop (2:30)"]
+        bundle: ["Uplifting Piece (4:10)", "Ambient Calm (4:30)", "With Orchestra (4:30)", "Short Edit (2:00)", "Loop (2:30)"]
       }
     ];
 
@@ -778,6 +778,13 @@
     let audioProgress = {};
     let currentPage = 0;
     const tracksPerPage = 10;
+
+    // Helper function to check if track matches mood
+    function trackMatchesMood(track, mood) {
+      if (mood === 'all') return true;
+      const moodArray = Array.isArray(track.mood) ? track.mood : [track.mood];
+      return moodArray.includes(mood);
+    }
 
     // Load cart from localStorage
     function loadCart() {
@@ -904,6 +911,7 @@
       const isInCart = cart.some(item => item.id === track.id);
       const buttonClass = isInCart ? 'btn-added' : 'btn-primary';
       const buttonText = isInCart ? 'Added ✓' : 'Add to Cart';
+      const moodArray = Array.isArray(track.mood) ? track.mood : [track.mood];
       
       return `
         <div class="card-glow rounded-lg sm:rounded-xl overflow-hidden group" data-track-id="${track.id}">
@@ -934,8 +942,7 @@
             
             <div class="flex items-center gap-1.5 sm:gap-2 mb-2.5 sm:mb-3 text-xs text-gray-400 flex-wrap">
               <span class="px-1.5 sm:px-2 py-0.5 bg-gray-800 rounded text-xs">${track.genre}</span>
-              <span class="truncate">${track.bpm} BPM</span>
-              <span class="truncate">${track.duration}</span>
+              ${moodArray.map(m => `<span class="px-1.5 sm:px-2 py-0.5 bg-orange-900/50 rounded text-xs text-orange-300">${m}</span>`).join('')}
             </div>
             
             <!-- Progress Bar -->
@@ -981,12 +988,13 @@
     // Filter and render tracks with pagination
     function filterAndRenderTracks() {
       const filtered = tracksData.filter(track => {
-        const moodMatch = currentMood === 'all' || track.mood === currentMood;
+        const moodMatch = trackMatchesMood(track, currentMood);
         const genreMatch = currentGenre === 'all' || track.genre === currentGenre;
+        const moodString = Array.isArray(track.mood) ? track.mood.join(' ') : track.mood;
         const searchMatch = searchQuery === '' || 
           track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           track.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          track.mood.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          moodString.toLowerCase().includes(searchQuery.toLowerCase()) ||
           track.genre.toLowerCase().includes(searchQuery.toLowerCase());
         return moodMatch && genreMatch && searchMatch;
       });
@@ -1153,6 +1161,7 @@
       const content = document.getElementById('modal-content');
       const discount = Math.round(((track.originalPrice - track.price) / track.originalPrice) * 100);
       const isInCart = cart.some(item => item.id === track.id);
+      const moodArray = Array.isArray(track.mood) ? track.mood : [track.mood];
 
       content.innerHTML = `
         <div class="relative">
@@ -1194,6 +1203,10 @@
           </div>
           
           <div class="mb-4 sm:mb-6">
+            <h3 class="font-semibold text-white mb-2 sm:mb-3 text-sm">Moods Included:</h3>
+            <div class="flex flex-wrap gap-1.5 sm:gap-2 mb-4">
+              ${moodArray.map(mood => `<span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-orange-900/50 rounded-full text-xs text-orange-300">${mood}</span>`).join('')}
+            </div>
             <h3 class="font-semibold text-white mb-2 sm:mb-3 text-sm">Bundle Includes:</h3>
             <ul class="space-y-1.5 sm:space-y-2">
               ${track.bundle.map(item => `
@@ -1781,5 +1794,5 @@
       });
     });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cdedce8753541e2',t:'MTc3MTA5NjE5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ce5742f472fecdb',t:'MTc3MTE2NTMwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
