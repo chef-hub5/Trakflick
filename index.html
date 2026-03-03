@@ -339,7 +339,7 @@
      </div><!-- Mood Filters -->
      <div class="mb-6 sm:mb-8">
       <h3 class="text-xs sm:text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Filter by Mood</h3>
-      <div class="flex flex-wrap gap-2"><button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300 active" data-mood="all">All</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="epic">Epic</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="emotional">Emotional</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="tense">Tense</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="groove">Groove</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="mysterious">Mysterious</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="calm">Calm</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="uplifting">Uplifting</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="suspense">Suspense</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="ambient">Ambient</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="heroic">Heroic</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="triumphant">Triumphant</button>
+      <div class="flex flex-wrap gap-2"><button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300 active" data-mood="all">All</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="epic">Epic</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="emotional">Emotional</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="tense">Tense</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="groove">Groove</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="mysterious">Mysterious</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="calm">Calm</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="uplifting">Uplifting</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="suspense">Suspense</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="ambient">Ambient</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="happy">Happy</button> <button class="filter-chip px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-300" data-mood="triumphant">Triumphant</button>
       </div>
      </div><!-- Genre Filters -->
      <div class="mb-6 sm:mb-8">
@@ -622,6 +622,22 @@
       },
       {
          id: 4,
+        title: "Real Affair",
+        mood: ["ambient", "groove", "tensed", "calm"],
+        genre: "piano",
+        // bpm: 120,
+        duration: "01:13",
+        durationSeconds: 73,
+        price: 55000,
+        originalPrice: 100000,
+        artwork: "Images/Ra.jpg",
+        mp3: "Preview sounds/RA_All.mp3",
+        tags: ["ambient", "groove", "tensed", "calm"],
+        description: "A powerful piano suite featuring soaring strings, drums and melodies, Perfect for trailers, happy moments, ambient and calm and tensed reveals.",
+        bundle: ["RA Groove (2:12)", "RA Ambient (2:07)", "RA Calm (1:17)", "RA Calm 2 (2:02)", "RA Tensed (1:33)"]
+      },
+      {
+         id: 5,
         title: "Betrayal in the City",
         mood: ["suspense", "groove", "calm"],
         genre: "piano",
